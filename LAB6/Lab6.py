@@ -23,7 +23,25 @@ def betterBnW(pic):
     setColor(p, makeColor(lumin, lumin, lumin))
   return pic
 
-#skipping warm up
+#Warm Up
+# Function that removes red eye from an image by replacing the red pixels with black
+def removeRed():
+  pic = get_pic()
+  width = getWidth(pic)
+  height = getHeight(pic)
+  #start for loop to cycle through all pixels in the image
+  for y in range (0,height): 
+    for x in range (0, width):
+      pixel=getPixel(pic, x, y) 
+      #creates the color black
+      color=makeColor(0,0,0) 
+      #This if statement tests the pixel is red. If so, it re-colors it black
+      if getRed(pixel) > (getGreen(pixel)/1.4 +  getBlue(pixel)/1.4):
+        setColor(pixel, color) 
+
+  repaint(pic) 
+  write_pic(pic)
+  return pic
 
 #Problem 1
 #This function creates a sepia toned picture from a picture given
