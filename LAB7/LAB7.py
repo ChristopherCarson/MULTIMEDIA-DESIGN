@@ -122,5 +122,15 @@ def pyCopy(source, target, targetX, targetY):
       setColor(new, color)
 
   return target
-  
- 
+
+#Function requires a picture and an x and y coordinate
+#It will ask you what you want the card to say, then how big you want it
+#then itll add the text to the picture.
+#You can change the font by change the first parameter in the myFont variable
+#You can also color the font by changing/removing the color parameter to addTextWithStyle (default is black)  
+def createText(picture, x, y):
+  import java.awt.Font as Font
+  text = requestString("Enter what you would like the card to say.")
+  size = requestInteger("How big do you want the text?")
+  myFont = makeStyle("Blackadder ITC", Font.BOLD, size) #you can change the font to anything in java awt
+  addTextWithStyle(picture, x, y, text, myFont, red) 
