@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 def t():
   pathBack = getMediaPath("back.jpg")
   back = makePicture(pathBack)
@@ -6,6 +7,34 @@ def t():
   show(back)
 
 def turkey():
+=======
+#warmup
+#Find an image of the desert and draw a snowman on it. 
+#You can just do three white circles on top of each other, or go crazy. It is up to you.
+def snowMan():
+  pic = get_pic()
+  x = getWidth(pic)
+  y = getHeight(pic)
+  #the first circle is the top one then the second
+  #then the third.
+  addOvalFilled(pic,(x-y-20),40,(y/5),(y/5),white)
+  addOvalFilled(pic,(x-y-35),60,(x/4),(x/4),white)
+  addOvalFilled(pic,47,(x-y),(x/3),(x/3),white) 
+  #the eyes
+  addOvalFilled(pic,80,45,(y/25),(y/25),black) 
+  addOvalFilled(pic,92,45,(y/25),(y/25),black) 
+  #the mouth
+  addOvalFilled(pic,75,52,(y/30),(y/30),black)
+  addOvalFilled(pic,78,56,(y/30),(y/30),black)
+  addOvalFilled(pic,84,57,(y/30),(y/30),black)
+  addOvalFilled(pic,92,57,(y/30),(y/30),black)
+  addOvalFilled(pic,97,56,(y/30),(y/30),black)
+  addOvalFilled(pic,100,52,(y/30),(y/30),black)
+  #writes to a file
+  show(pic)
+  
+def test():
+>>>>>>> 35ba7a6c066c8749d70f61fb17068fda401d41e5
   setMediaFolder()
   pathHead = getMediaPath("chead.jpg")
   head = makePicture(pathHead)
