@@ -179,56 +179,56 @@ def addBackgroundPattern(image, pattern, width_increase, height_increase, startX
   
 #Adds an artificial shading effect to the bottom and right sides of a chosen area inside of a photo.
 def addShadowEffect(image, startX, startY, height, width, shadow_depth = 20, shadow_offset = 10, blur_repetitions = 3):   
-    #image - The image that the effect will be applied to.
-    #startX - The starting x-coordinate of the area the effect will be applied to.
-    #startY - The starting y-coordinate of the area the effect will be applied to.
-    #height - The height of the area the effect will be applied to.
-    #width - The width of the area the effect will be applied to.
-    #shadow_depth (optional) - The amount of pixels out from the x and y coordinates that will be shaded. Higher value = longer shadow.
-    #shadow_offset (optional) - The amount of pixels that the shadow will be offset from the startX and startY coordinates. Creates more angled look.
-    #blur_repetitions (optional) - The amount of time the blur effect will be run on the shading values.
-    
-    #Creates a matrix to store shading values.
-    #Matrix contains x and y coordinates and determines each coordinate's shading value
-    #by its right/bottom distance from the area that the effect is being applied to,
-    #stopping once it reaches the designated depth. 
-    #Shading values are from 1.0 to 0.
-    shadow_matrix = [[0 for i in xrange(height + shadow_depth)] for i in xrange(width + shadow_depth)]
-    for x in range(shadow_offset - 1,width + shadow_depth - 1):
-      for y in range(shadow_offset - 1, height + shadow_depth - 1):
-        if x <= width and y <= height:
-          shadow_matrix[x][y] = 1.0
-        elif x > width and y <= height:
-          shadow_matrix[x][y] = ((width + shadow_depth) - x) * (1.0 / shadow_depth)
-        elif x <= width and y > height:
-          shadow_matrix[x][y] = ((height + shadow_depth) - y) * (1.0 / shadow_depth)
-        elif x > width and y > height:
-          dist = calculateDistance(width, height, x, y)
-          if dist > shadow_depth: shadow_matrix[x][y] = 0
-          else: shadow_matrix[x][y] = (shadow_depth - dist) * (1.0 / shadow_depth)  
- 
-    #Create Blur to smooth edges
-    #Blur works by taking the average of each coordinate's shadow multiplier and the multipliers of its 8 surrounding neighbors.
-    #Repeats multiple times to increase the effect.
-    for count in range(blur_repetitions):
-      for x in range(1, width + shadow_depth - 1):
-        for y in range(1, height + shadow_depth - 1):
-          sum = shadow_matrix[x][y]
-          for i in range(-1, 2):
-            for j in range(-1, 2):
-              if i != 0 or j != 0: sum += shadow_matrix[x + i][y + j]
-          shadow_matrix[x][y] = sum / 9  
-  
-    #Applies the shadow effect using the shading matrix to each pixel on the right and bottom side of the selected area.
-    #Uses depth and offset values to determine where to shade.
-    #Formula for applying the effect is color value * (1 - shading value)
-    for x in range(0, width + shadow_depth - 1):
-     for y in range(0, height + shadow_depth - 1):
-       if x >= width - 1 or y >= height - 1: 
-         pixel = getPixel(image, startX + x, startY + y)
-         color = makeColor(pixel.red * (1 - shadow_matrix[x][y]), pixel.green * (1 - shadow_matrix[x][y]), pixel.blue * (1 - shadow_matrix[x][y]))
-         setColor(pixel, color)  
-    return image 
+  #image - The image that the effect will be applied to.
+  #startX - The starting x-coordinate of the area the effect will be applied to.
+  #startY - The starting y-coordinate of the area the effect will be applied to.
+  #height - The height of the area the effect will be applied to.
+  #width - The width of the area the effect will be applied to.
+  #shadow_depth (optional) - The amount of pixels out from the x and y coordinates that will be shaded. Higher value = longer shadow.
+  #shadow_offset (optional) - The amount of pixels that the shadow will be offset from the startX and startY coordinates. Creates more angled look.
+  #blur_repetitions (optional) - The amount of time the blur effect will be run on the shading values.
+
+  #Creates a matrix to store shading values.
+  #Matrix contains x and y coordinates and determines each coordinate's shading value
+  #by its right/bottom distance from the area that the effect is being applied to,
+  #stopping once it reaches the designated depth. 
+  #Shading values are from 1.0 to 0.
+  shadow_matrix = [[0 for i in xrange(height + shadow_depth)] for i in xrange(width + shadow_depth)]
+  for x in range(shadow_offset - 1,width + shadow_depth - 1):
+    for y in range(shadow_offset - 1, height + shadow_depth - 1):
+      if x <= width and y <= height:
+        shadow_matrix[x][y] = 1.0
+      elif x > width and y <= height:
+        shadow_matrix[x][y] = ((width + shadow_depth) - x) * (1.0 / shadow_depth)
+      elif x <= width and y > height:
+        shadow_matrix[x][y] = ((height + shadow_depth) - y) * (1.0 / shadow_depth)
+      elif x > width and y > height:
+        dist = calculateDistance(width, height, x, y)
+        if dist > shadow_depth: shadow_matrix[x][y] = 0
+        else: shadow_matrix[x][y] = (shadow_depth - dist) * (1.0 / shadow_depth)  
+
+  #Create Blur to smooth edges
+  #Blur works by taking the average of each coordinate's shadow multiplier and the multipliers of its 8 surrounding neighbors.
+  #Repeats multiple times to increase the effect.
+  for count in range(blur_repetitions):
+    for x in range(1, width + shadow_depth - 1):
+      for y in range(1, height + shadow_depth - 1):
+        sum = shadow_matrix[x][y]
+        for i in range(-1, 2):
+          for j in range(-1, 2):
+            if i != 0 or j != 0: sum += shadow_matrix[x + i][y + j]
+        shadow_matrix[x][y] = sum / 9  
+
+  #Applies the shadow effect using the shading matrix to each pixel on the right and bottom side of the selected area.
+  #Uses depth and offset values to determine where to shade.
+  #Formula for applying the effect is color value * (1 - shading value)
+  for x in range(0, width + shadow_depth - 1):
+    for y in range(0, height + shadow_depth - 1):
+      if x >= width - 1 or y >= height - 1: 
+        pixel = getPixel(image, startX + x, startY + y)
+        color = makeColor(pixel.red * (1 - shadow_matrix[x][y]), pixel.green * (1 - shadow_matrix[x][y]), pixel.blue * (1 - shadow_matrix[x][y]))
+        setColor(pixel, color)  
+  return image 
 
 #image = get_pic()
 #pattern = get_pic()
