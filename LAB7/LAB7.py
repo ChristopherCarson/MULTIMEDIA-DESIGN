@@ -1,14 +1,8 @@
-<<<<<<< HEAD
-def t():
-  pathBack = getMediaPath("back.jpg")
-  back = makePicture(pathBack)
-  createText(back, "Happy Thanksgiving,", 50, 10, 50)
-  createText(back, "you Turkey!", 50, 160, 120)
-  show(back)
+import math
 
-def turkey():
-=======
-#warmup
+def get_pic():
+  return makePicture(pickAFile())
+#WARMUP
 #Find an image of the desert and draw a snowman on it. 
 #You can just do three white circles on top of each other, or go crazy. It is up to you.
 def snowMan():
@@ -33,8 +27,8 @@ def snowMan():
   #writes to a file
   show(pic)
   
-def test():
->>>>>>> 35ba7a6c066c8749d70f61fb17068fda401d41e5
+
+def chris():
   setMediaFolder()
   pathHead = getMediaPath("chead.jpg")
   head = makePicture(pathHead)
@@ -57,11 +51,11 @@ def test():
   head = redColor(head)
   head = greenCopy(turkey, greenHead, head, 530, 60)
   head = shrinkPic(head, 2)
-  card = chromakey(back, head, 0, 182)
-  card = addBackgroundPattern(card, pattern, 80, 78, 40, 40)
-  #card = addShadowEffect(card, 40, 35, back.height, back.width)
+  card = chromakey(back, head, -1, 183)
+  card = addBackgroundPattern(card, pattern, 78, 79, 39, 40)
+  card = addShadowEffect(card, 40, 35, back.height, back.width)
   show(card)
-  #writePictureTo(card,"C:\Users\chris\Desktop\image.png")
+  writePictureTo(card,"C:\Users\chris\Desktop\image.png")
 
 #Green screen function from previous assignment modified to take target x and y coordinates
 def chromakey(background, green_pic, targetX, targetY):
@@ -292,6 +286,10 @@ def addShadowEffect(image, startX, startY, height, width, shadow_depth = 20, sha
         color = makeColor(pixel.red * (1 - shadow_matrix[x][y]), pixel.green * (1 - shadow_matrix[x][y]), pixel.blue * (1 - shadow_matrix[x][y]))
         setColor(pixel, color)  
   return image 
+
+def calculateDistance(x1,y1,x2,y2):
+     dist = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+     return dist
 
 #image = get_pic()
 #pattern = get_pic()
