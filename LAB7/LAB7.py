@@ -1,7 +1,13 @@
+def t():
+  pathBack = getMediaPath("back.jpg")
+  back = makePicture(pathBack)
+  createText(back, "Happy Thanksgiving,", 50, 10, 50)
+  createText(back, "you Turkey!", 50, 160, 120)
+  show(back)
 
 def turkey():
   setMediaFolder()
-  pathHead = getMediaPath("head.jpg")
+  pathHead = getMediaPath("chead.jpg")
   head = makePicture(pathHead)
   pathTurk = getMediaPath("kturkey.jpg")
   turkey = makePicture(pathTurk)
@@ -9,7 +15,12 @@ def turkey():
   greenHead = makePicture(pathGreen)
   pathBack = getMediaPath("back.jpg")
   back = makePicture(pathBack)
+  pathPatt = getMediaPath("mapleleaf1.jpg")
+  pattern = makePicture(pathPatt)
+ 
   
+  createText(back, "Happy Thanksgiving,", 50, 10, 70)
+  createText(back, "you Turkey!", 50, 160, 140)
   head = rotatePic(head)
   head = vpic(head)
   head = tiltPic(head)
@@ -17,10 +28,13 @@ def turkey():
   head = redColor(head)
   head = greenCopy(turkey, greenHead, head, 530, 60)
   head = shrinkPic(head, 2)
-  card = chromakey(back, head, 1, 140)
+  card = chromakey(back, head, 0, 182)
+  card = addBackgroundPattern(card, pattern, 80, 78, 40, 40)
+  #card = addShadowEffect(card, 40, 35, back.height, back.width)
   show(card)
-  writePictureTo(card,"C:\Users\chris\Desktop\image.png")
-  
+  #writePictureTo(card,"C:\Users\chris\Desktop\image.png")
+
+#Green screen function from previous assignment modified to take target x and y coordinates
 def chromakey(background, green_pic, targetX, targetY):
   new_y = targetY
   for y in range (0,getHeight(green_pic)):
@@ -34,24 +48,8 @@ def chromakey(background, green_pic, targetX, targetY):
         if getRed(original) > (getGreen(original) - 30) or getBlue(original) > (getGreen(original) - 30):
           setColor(new, color)
   return background
-  
-def pyCopy(source, target, targetX, targetY):
-  new_y = targetY - 1
-  
-  for y in range (0,getHeight(source)):
-    if new_y < getHeight(target)-1:
-      new_y += 1
-      new_x = targetX - 1
-    for x in range (0, getWidth(source)):
-      if new_x < getWidth(target)-1:
-        new_x += 1
-      original=getPixel(source, x, y)
-      new=getPixel(target, new_x, new_y)
-      color=getColor(original)
-      setColor(new, color)
 
-  return target
-  
+#Function to shrink image. The int is the denominator of the new size. So 2 give 1/2 size, 3 gives 1/3 size, etc.
 def shrinkPic(pic, int):
   width = getWidth(pic)
   height = getHeight(pic)
@@ -71,18 +69,20 @@ def shrinkPic(pic, int):
       color=getColor(original)
       setColor(new, color)
   return copy
-  
+
+#function to increase the redness of an image
 def redColor(pic):
   pixels = getPixels(pic)
   for p in pixels:
     r = getBlue(p)
-    setBlue(p, r*1.1)
+    setBlue(p, r*1.2)
     b = getBlue(p)
-    setBlue(p, b*.9)
+    setBlue(p, b*.8)
     g = getGreen(p)
-    setGreen(p, g*.9) 
+    setGreen(p, g*.8) 
   return(pic)
-  
+
+#Custom function that copies on the area designed by green in the "key" image from the source to the target
 def greenCopy(turkey, greenHead, head, targetX, targetY):
   new_y = targetY
   for y in range (136,318):
@@ -97,7 +97,8 @@ def greenCopy(turkey, greenHead, head, targetX, targetY):
         if getRed(key) < (getGreen(key) - 30) and getBlue(key) < (getGreen(key) - 30):
           setColor(new, color)
   return turkey
-  
+
+#function to fix the spots created by tilting the an image
 def fixSpots(copy):
   for y in range (0,getHeight(copy)-2):
      for x in range (2, getWidth(copy)-2):
@@ -108,6 +109,7 @@ def fixSpots(copy):
          setColor(new, color)
   return copy
 
+#function to tilt an image
 def tiltPic(pic):
   width = getWidth(pic)
   height = getHeight(pic)
@@ -164,10 +166,10 @@ def rotatePic(pic):
 #then itll add the text to the picture.
 #You can change the font by change the first parameter in the myFont variable
 #You can also color the font by changing/removing the color parameter to addTextWithStyle (default is black)  
-def createText(picture, x, y):
+def createText(picture, text, size, x, y):
   import java.awt.Font as Font
-  text = requestString("Enter what you would like the card to say.")
-  size = requestInteger("How big do you want the text?")
+  #text = requestString("Enter what you would like the card to say.")
+  #size = requestInteger("How big do you want the text?")
   myFont = makeStyle("Blackadder ITC", Font.BOLD, size) #you can change the font to anything in java awt
   addTextWithStyle(picture, x, y, text, myFont, red)
 
