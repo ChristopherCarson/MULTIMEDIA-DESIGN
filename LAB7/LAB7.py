@@ -17,6 +17,10 @@ def turkeyfi(pic, back, targetX, targetY):
   chromakey(card, pic, targetX, targetX)
   return card
   
+def calculateDistance(x1,y1,x2,y2): 
+  #Calculates the distance between 2 coordinates. 
+  dist = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)  
+  return dist     
   
 #Problem 3 
 # Function that replaces all of the green pixels in an image with pixels forma background image
@@ -133,4 +137,101 @@ def createText(picture, x, y):
   text = requestString("Enter what you would like the card to say.")
   size = requestInteger("How big do you want the text?")
   myFont = makeStyle("Blackadder ITC", Font.BOLD, size) #you can change the font to anything in java awt
-  addTextWithStyle(picture, x, y, text, myFont, red) 
+  addTextWithStyle(picture, x, y, text, myFont, red)
+
+#Surrounds an image with a background pattern by creating a larger blank image,
+#inserting a pattern image to create the background, and then printing the original image on top.
+#If the pattern image is smaller than the size of the new image, it will repeat to fill up space,
+#so a repeating vector image works best.
+def addBackgroundPattern(image, pattern, width_increase, height_increase, startX, startY):
+  #image - the original image.
+  #pattern - the pattern that will populate the background.
+  #width_increase - the total width that the new image will increase by over the original image.
+  #height_increase - the total height that the new image will increase by over the original image.
+  #startX - The the top-left x-coordinate where the image will be placed on the new_image.
+  #startY - The the top-left y-coordinate where the image will be placed on the new_image.
+  
+  new_width = width_increase + image.width
+  new_height = height_increase + image.height  
+  new_image = makeEmptyPicture(new_width,new_height)
+  
+  #Add pattern to new blank image.
+  patternX = 0
+  for x in range(0, new_width):
+    patternX += 1
+    if patternX == pattern.width: patternX = 0
+    patternY = 0 
+    for y in range(0, new_height):
+      patternY += 1
+      if patternY == pattern.height: patternY = 0 
+      pattern_color = makeColor(getPixel(pattern, patternX, patternY).color)
+      color_to_replace = getPixel(new_image, x,y)
+      setColor(color_to_replace, pattern_color)
+        
+  #Add original image to new image.
+  for x in range(0, image.width):
+      for y in range(0, image.height):
+        image_color = makeColor(getPixel(image, x, y).color)
+        color_to_replace = getPixel(new_image, startX + x - 1, startY + y - 1)
+        setColor(color_to_replace, image_color)       
+
+  return new_image   
+  
+#Adds an artificial shading effect to the bottom and right sides of a chosen area inside of a photo.
+def addShadowEffect(image, startX, startY, height, width, shadow_depth = 20, shadow_offset = 10, blur_repetitions = 3):   
+    #image - The image that the effect will be applied to.
+    #startX - The starting x-coordinate of the area the effect will be applied to.
+    #startY - The starting y-coordinate of the area the effect will be applied to.
+    #height - The height of the area the effect will be applied to.
+    #width - The width of the area the effect will be applied to.
+    #shadow_depth (optional) - The amount of pixels out from the x and y coordinates that will be shaded. Higher value = longer shadow.
+    #shadow_offset (optional) - The amount of pixels that the shadow will be offset from the startX and startY coordinates. Creates more angled look.
+    #blur_repetitions (optional) - The amount of time the blur effect will be run on the shading values.
+    
+    #Creates a matrix to store shading values.
+    #Matrix contains x and y coordinates and determines each coordinate's shading value
+    #by its right/bottom distance from the area that the effect is being applied to,
+    #stopping once it reaches the designated depth. 
+    #Shading values are from 1.0 to 0.
+    shadow_matrix = [[0 for i in xrange(height + shadow_depth)] for i in xrange(width + shadow_depth)]
+    for x in range(shadow_offset - 1,width + shadow_depth - 1):
+      for y in range(shadow_offset - 1, height + shadow_depth - 1):
+        if x <= width and y <= height:
+          shadow_matrix[x][y] = 1.0
+        elif x > width and y <= height:
+          shadow_matrix[x][y] = ((width + shadow_depth) - x) * (1.0 / shadow_depth)
+        elif x <= width and y > height:
+          shadow_matrix[x][y] = ((height + shadow_depth) - y) * (1.0 / shadow_depth)
+        elif x > width and y > height:
+          dist = calculateDistance(width, height, x, y)
+          if dist > shadow_depth: shadow_matrix[x][y] = 0
+          else: shadow_matrix[x][y] = (shadow_depth - dist) * (1.0 / shadow_depth)  
+ 
+    #Create Blur to smooth edges
+    #Blur works by taking the average of each coordinate's shadow multiplier and the multipliers of its 8 surrounding neighbors.
+    #Repeats multiple times to increase the effect.
+    for count in range(blur_repetitions):
+      for x in range(1, width + shadow_depth - 1):
+        for y in range(1, height + shadow_depth - 1):
+          sum = shadow_matrix[x][y]
+          for i in range(-1, 2):
+            for j in range(-1, 2):
+              if i != 0 or j != 0: sum += shadow_matrix[x + i][y + j]
+          shadow_matrix[x][y] = sum / 9  
+  
+    #Applies the shadow effect using the shading matrix to each pixel on the right and bottom side of the selected area.
+    #Uses depth and offset values to determine where to shade.
+    #Formula for applying the effect is color value * (1 - shading value)
+    for x in range(0, width + shadow_depth - 1):
+     for y in range(0, height + shadow_depth - 1):
+       if x >= width - 1 or y >= height - 1: 
+         pixel = getPixel(image, startX + x, startY + y)
+         color = makeColor(pixel.red * (1 - shadow_matrix[x][y]), pixel.green * (1 - shadow_matrix[x][y]), pixel.blue * (1 - shadow_matrix[x][y]))
+         setColor(pixel, color)  
+    return image 
+
+#image = get_pic()
+#pattern = get_pic()
+#border_image = addBackgroundPattern(image, pattern, 200, 200, 100, 150)
+#image_with_shadow = addShadowEffect(border_image, 100, 150, image.height, image.width)
+#show(image_with_shadow) 
