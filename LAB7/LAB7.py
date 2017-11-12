@@ -1,31 +1,26 @@
 
-  
-def test():
+def turkey():
   setMediaFolder()
-  pathTest = getMediaPath("TEST.jpg")
-  pic = makePicture(pathTest)
+  pathHead = getMediaPath("head.jpg")
+  head = makePicture(pathHead)
+  pathTurk = getMediaPath("kturkey.jpg")
+  turkey = makePicture(pathTurk)
+  pathGreen = getMediaPath("greenhead.png")
+  greenHead = makePicture(pathGreen)
   pathBack = getMediaPath("back.jpg")
   back = makePicture(pathBack)
   
-  card = turkeyfi(pic, back, 200, 150)  
-  repaint(card)
+  head = rotatePic(head)
+  head = vpic(head)
+  head = tiltPic(head)
+  head = fixSpots(head)
+  head = redColor(head)
+  head = greenCopy(turkey, greenHead, head, 530, 60)
+  head = shrinkPic(head, 2)
+  card = chromakey(back, head, 1, 140)
+  show(card)
+  writePictureTo(card,"C:\Users\chris\Desktop\image.png")
   
-def turkeyfi(pic, back, targetX, targetY):
-  card = makeEmptyPicture(800, 600)
-  pic = shrinkPic(createTurkey(pic),3)
-  pyCopy(back, card, 1, 1)
-  chromakey(card, pic, targetX, targetX)
-  return card
-  
-def calculateDistance(x1,y1,x2,y2): 
-  #Calculates the distance between 2 coordinates. 
-  dist = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)  
-  return dist     
-  
-#Problem 3 
-# Function that replaces all of the green pixels in an image with pixels forma background image
-# The user must first select the BACKGROUND image, then the GREEN SCREEN image.
-# With this code,the BACKGROUND must be larger than the GREEN SCREEN image.
 def chromakey(background, green_pic, targetX, targetY):
   new_y = targetY
   for y in range (0,getHeight(green_pic)):
@@ -38,8 +33,25 @@ def chromakey(background, green_pic, targetX, targetY):
         color=getColor(original)
         if getRed(original) > (getGreen(original) - 30) or getBlue(original) > (getGreen(original) - 30):
           setColor(new, color)
-  return green_pic
+  return background
+  
+def pyCopy(source, target, targetX, targetY):
+  new_y = targetY - 1
+  
+  for y in range (0,getHeight(source)):
+    if new_y < getHeight(target)-1:
+      new_y += 1
+      new_x = targetX - 1
+    for x in range (0, getWidth(source)):
+      if new_x < getWidth(target)-1:
+        new_x += 1
+      original=getPixel(source, x, y)
+      new=getPixel(target, new_x, new_y)
+      color=getColor(original)
+      setColor(new, color)
 
+  return target
+  
 def shrinkPic(pic, int):
   width = getWidth(pic)
   height = getHeight(pic)
@@ -59,73 +71,93 @@ def shrinkPic(pic, int):
       color=getColor(original)
       setColor(new, color)
   return copy
-
-# function to create a copy of a picture that is 50% smaller
-def createTurkey(pic):
-  pathTurk = getMediaPath("turkey.jpg")
-  turk = makePicture(pathTurk)
-  pathGreen = getMediaPath("GREEN.png")
-  copy = makePicture(pathGreen)
-
-  new_y = -1
-  for y in range (0,getHeight(pic)):
+  
+def redColor(pic):
+  pixels = getPixels(pic)
+  for p in pixels:
+    r = getBlue(p)
+    setBlue(p, r*1.1)
+    b = getBlue(p)
+    setBlue(p, b*.9)
+    g = getGreen(p)
+    setGreen(p, g*.9) 
+  return(pic)
+  
+def greenCopy(turkey, greenHead, head, targetX, targetY):
+  new_y = targetY
+  for y in range (136,318):
       new_y += 1
-      new_x = 680
-      for x in range (0, getWidth(pic)):
+      new_x = targetX
+      for x in range (200, 389):
         new_x += 1
-        original=getPixel(pic, x, y)
-        new=getPixel(copy, new_x - y/2, new_y + x/2)
+        key=getPixel(greenHead, x, y)
+        original=getPixel(head, x, y)
+        new=getPixel(turkey, new_x, new_y)
         color=getColor(original)
-        if getRed(original) > (getGreen(original) - 30) or getBlue(original) > (getGreen(original) - 30):
+        if getRed(key) < (getGreen(key) - 30) and getBlue(key) < (getGreen(key) - 30):
           setColor(new, color)
-          r = getBlue(new)
-          setBlue(new, r*1.1-50)
-          b = getBlue(new)
-          setBlue(new, b*.9-50)    
-          g = getGreen(new)
-          setGreen(new, g*.9-50)   
+  return turkey
+  
+def fixSpots(copy):
   for y in range (0,getHeight(copy)-2):
-     for x in range (600, getWidth(copy)-2):
+     for x in range (2, getWidth(copy)-2):
        original=getPixel(copy, x, y)
        new=getPixel(copy, x-1, y)
        color=getColor(original)
-       if getRed(new) < (getGreen(new) - 30) and getBlue(new) < (getGreen(new) - 30):
+       if getRed(new) + getGreen(new) + getBlue(new) > 630:
          setColor(new, color)
-  new_y = 140
-  for y in range (0,getHeight(turk)):
-      new_y += 1
-      new_x = 20
-      for x in range (0, getWidth(turk)):
-        new_x += 1
-        original=getPixel(turk, x, y)
-        new=getPixel(copy, new_x, new_y)
-        color=getColor(original)
-        if getRed(original) > (getGreen(original) - 30) or getBlue(original) > (getGreen(original) - 30):
-          setColor(new, color)
-          r = getBlue(new)
-          setBlue(new, r*1.1-50)
-          b = getBlue(new)
-          setBlue(new, b*.9-50)    
-          g = getGreen(new)
-          setGreen(new, g*.9-50) 
-  return(copy)
-  
-def pyCopy(source, target, targetX, targetY):
-  new_y = targetY - 1
-  
-  for y in range (0,getHeight(source)):
-    if new_y < getHeight(target)-1:
-      new_y += 1
-      new_x = targetX - 1
-    for x in range (0, getWidth(source)):
-      if new_x < getWidth(target)-1:
-        new_x += 1
-      original=getPixel(source, x, y)
-      new=getPixel(target, new_x, new_y)
-      color=getColor(original)
-      setColor(new, color)
+  return copy
 
-  return target
+def tiltPic(pic):
+  width = getWidth(pic)
+  height = getHeight(pic)
+  copy = makeEmptyPicture(width+300, height+300)
+  for y in range (0,height):
+    for x in range (0, width):
+        left=getPixel(pic, x, y)
+        right=getPixel(copy, (x+100) + y/2 , (y+200) - x/2)
+        color=getColor(left)
+        setColor(right, color)
+  return copy   
+
+def vpic(pic):
+  width = getWidth(pic)
+  height = getHeight(pic)
+  copy = makeEmptyPicture(width, height)
+  for y in range (0,height):
+    for x in range (0, width):
+        left=getPixel(pic, x, y)
+        right=getPixel(copy, width-x-1,y)
+        color=getColor(left)
+        setColor(right, color)
+  return copy    
+
+# function to mirror half of the picture horizontally
+def hpic(pic):
+
+  width = getWidth(pic)
+  height = getHeight(pic)
+
+  for y in range (0,height):
+    for x in range (0, width):
+        top=getPixel(pic, x, y)
+        bottom=getPixel(pic, x,height-y-1)
+        color=getColor(top)
+        setColor(bottom, color)
+  return pic
+
+# function to create a copy of a picture rotated 90 degrees
+def rotatePic(pic):
+  width = getWidth(pic)
+  height = getHeight(pic)
+  copy = makeEmptyPicture(height, width)
+  for y in range (0,height):
+    for x in range (0, width):
+        original=getPixel(pic, x, y)
+        new=getPixel(copy, y, x)
+        color=getColor(original)
+        setColor(new, color) 
+  return copy
 
 #Function requires a picture and an x and y coordinate
 #It will ask you what you want the card to say, then how big you want it
