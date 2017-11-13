@@ -296,13 +296,21 @@ def addShadowEffect(image, startX, startY, height, width, shadow_depth = 20, sha
   #Blur works by taking the average of each coordinate's shadow multiplier and the multipliers of its 8 surrounding neighbors.
   #Repeats multiple times to increase the effect.
   for count in range(blur_repetitions):
-    for x in range(1, width + shadow_depth - 1):
-      for y in range(1, height + shadow_depth - 1):
+    for y in range(1, shadow_offset * 2):
+      for x in range(width - shadow_depth, width + shadow_depth - 1):
         sum = shadow_matrix[x][y]
         for i in range(-1, 2):
           for j in range(-1, 2):
             if i != 0 or j != 0: sum += shadow_matrix[x + i][y + j]
-        shadow_matrix[x][y] = sum / 9  
+        shadow_matrix[x][y] = sum / 9
+        
+    for x in range(1, shadow_offset * 2):
+      for y in range(height - shadow_depth, height + shadow_depth - 1):
+        sum = shadow_matrix[x][y]
+        for i in range(-1, 2):
+          for j in range(-1, 2):
+            if i != 0 or j != 0: sum += shadow_matrix[x + i][y + j]
+        shadow_matrix[x][y] = sum / 9    
 
   #Applies the shadow effect using the shading matrix to each pixel on the right and bottom side of the selected area.
   #Uses depth and offset values to determine where to shade.
