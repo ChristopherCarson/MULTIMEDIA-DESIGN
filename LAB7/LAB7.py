@@ -57,6 +57,34 @@ def chris():
   show(card)
   writePictureTo(card,"C:\Users\chris\Desktop\image.png")
 
+def john():
+  setMediaFolder()
+  pathHead = getMediaPath("chead.png")
+  head = makePicture(pathHead)
+  pathTurk = getMediaPath("kturkey.jpg")
+  turkey = makePicture(pathTurk)
+  pathGreen = getMediaPath("greenhead.png")
+  greenHead = makePicture(pathGreen)
+  pathBack = getMediaPath("001thanksgiving.jpg")
+  back = makePicture(pathBack)
+  pathPatt = getMediaPath("001leafpattern.jpg")
+  pattern = makePicture(pathPatt)
+   
+  createText(back, "Happy Thanksgiving,", 85, 10, 100)
+  createText(back, "you Turkey!", 40, 530, 200)
+  head = rotatePic(head)
+  head = vpic(head)
+  head = tiltPic(head)
+  head = fixSpots(head)
+  head = redColor(head)
+  head = greenCopy(turkey, greenHead, head, 530, 60)
+  head = shrinkPic(head, 2)
+  card = chromakey(back, head, -1, 183)
+  card = addBackgroundPattern(card, pattern, 100, 100, 50, 50)
+  card = addShadowEffect(card, 50, 50, back.height, back.width)
+  show(card)
+  writePictureTo(card,"C:\Users\John Coffelt\Pictures\PythonPics\TCard.jpg")
+  
 #Green screen function from previous assignment modified to take target x and y coordinates
 def chromakey(background, green_pic, targetX, targetY):
   new_y = targetY
