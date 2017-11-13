@@ -125,8 +125,8 @@ def shrinkPic(pic, int):
 def redColor(pic):
   pixels = getPixels(pic)
   for p in pixels:
-    r = getBlue(p)
-    setBlue(p, r*1.2)
+    r = getRed(p)
+    setRed(p, r*1.2)
     b = getBlue(p)
     setBlue(p, b*.8)
     g = getGreen(p)
