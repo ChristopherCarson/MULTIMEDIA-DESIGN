@@ -57,6 +57,34 @@ def chris():
   show(card)
   writePictureTo(card,"C:\Users\chris\Desktop\image.png")
 
+def john():
+  setMediaFolder()
+  pathHead = getMediaPath("chead.png")
+  head = makePicture(pathHead)
+  pathTurk = getMediaPath("kturkey.jpg")
+  turkey = makePicture(pathTurk)
+  pathGreen = getMediaPath("greenhead.png")
+  greenHead = makePicture(pathGreen)
+  pathBack = getMediaPath("001thanksgiving.jpg")
+  back = makePicture(pathBack)
+  pathPatt = getMediaPath("001leafpattern.jpg")
+  pattern = makePicture(pathPatt)
+   
+  createText(back, "Happy Thanksgiving,", 85, 10, 100)
+  createText(back, "you Turkey!", 40, 530, 200)
+  head = rotatePic(head)
+  head = vpic(head)
+  head = tiltPic(head)
+  head = fixSpots(head)
+  head = redColor(head)
+  head = greenCopy(turkey, greenHead, head, 530, 60)
+  head = shrinkPic(head, 2)
+  card = chromakey(back, head, -1, 183)
+  card = addBackgroundPattern(card, pattern, 100, 100, 50, 50)
+  card = addShadowEffect(card, 50, 50, back.height, back.width)
+  show(card)
+  writePictureTo(card,"C:\Users\John Coffelt\Pictures\PythonPics\TCard.jpg")
+  
 #Green screen function from previous assignment modified to take target x and y coordinates
 def chromakey(background, green_pic, targetX, targetY):
   new_y = targetY
@@ -97,8 +125,8 @@ def shrinkPic(pic, int):
 def redColor(pic):
   pixels = getPixels(pic)
   for p in pixels:
-    r = getBlue(p)
-    setBlue(p, r*1.2)
+    r = getRed(p)
+    setRed(p, r*1.2)
     b = getBlue(p)
     setBlue(p, b*.8)
     g = getGreen(p)
@@ -268,13 +296,21 @@ def addShadowEffect(image, startX, startY, height, width, shadow_depth = 20, sha
   #Blur works by taking the average of each coordinate's shadow multiplier and the multipliers of its 8 surrounding neighbors.
   #Repeats multiple times to increase the effect.
   for count in range(blur_repetitions):
-    for x in range(1, width + shadow_depth - 1):
-      for y in range(1, height + shadow_depth - 1):
+    for y in range(1, shadow_offset * 2):
+      for x in range(width - shadow_depth, width + shadow_depth - 1):
         sum = shadow_matrix[x][y]
         for i in range(-1, 2):
           for j in range(-1, 2):
             if i != 0 or j != 0: sum += shadow_matrix[x + i][y + j]
-        shadow_matrix[x][y] = sum / 9  
+        shadow_matrix[x][y] = sum / 9
+        
+    for x in range(1, shadow_offset * 2):
+      for y in range(height - shadow_depth, height + shadow_depth - 1):
+        sum = shadow_matrix[x][y]
+        for i in range(-1, 2):
+          for j in range(-1, 2):
+            if i != 0 or j != 0: sum += shadow_matrix[x + i][y + j]
+        shadow_matrix[x][y] = sum / 9    
 
   #Applies the shadow effect using the shading matrix to each pixel on the right and bottom side of the selected area.
   #Uses depth and offset values to determine where to shade.
