@@ -101,8 +101,3 @@ def calculateDistance(x1,y1,x2,y2):
      dist = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
      return dist
 
-#image = get_pic()
-#pattern = get_pic()
-#border_image = addBackgroundPattern(image, pattern, 200, 200, 100, 150)
-#image_with_shadow = addShadowEffect(border_image, 100, 150, image.height, image.width)
-#show(image_with_shadow) 
