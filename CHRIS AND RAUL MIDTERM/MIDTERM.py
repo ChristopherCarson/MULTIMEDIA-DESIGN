@@ -1,5 +1,13 @@
 import math
 
+def d():
+  #setMediaFolder()
+  path = getMediaPath("2014.jpg")
+  img = makePicture(path)
+  
+  
+  show(img)
+
 def c():
   #setMediaFolder()
   path = getMediaPath("CSUMB KEY.jpg")
@@ -21,6 +29,7 @@ def c():
   
   show(img)
   
+  
 #Green screen function from previous assignment modified to take target x and y coordinates
 def waterMark(img, key, targetX, targetY, shadow):
   new_y = targetY
@@ -32,7 +41,7 @@ def waterMark(img, key, targetX, targetY, shadow):
         original=getPixel(key, x, y)
         pixel=getPixel(img, new_x, new_y)
         color = makeColor(pixel.red * (1 - shadow), pixel.green * (1 - shadow), pixel.blue * (1 - shadow))
-        if getRed(original) < (getGreen(original) - 30) and getBlue(original) < (getGreen(original) - 30):
+        if getRed(original) < (getGreen(original) - 30) and getBlue(original) < (getGreen(original) - 30):        
           setColor(pixel, color)
   return img
 
