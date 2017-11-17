@@ -16,7 +16,9 @@ def snowMan():
   addOvalFilled(pic,47,(x-y),(x/3),(x/3),white) 
   #the eyes
   addOvalFilled(pic,80,45,(y/25),(y/25),black) 
-  addOvalFilled(pic,92,45,(y/25),(y/25),black) 
+  addOvalFilled(pic,92,45,(y/25),(y/25),black)
+  #The nose 
+  addOvalFilled(pic,85,50,(y/25),(y/25),red)
   #the mouth
   addOvalFilled(pic,75,52,(y/30),(y/30),black)
   addOvalFilled(pic,78,56,(y/30),(y/30),black)
@@ -26,6 +28,35 @@ def snowMan():
   addOvalFilled(pic,100,52,(y/30),(y/30),black)
   #writes to a file
   show(pic)
+
+def raul():
+  setMediaFolder()
+  pathHead = getMediaPath("rhead.jpg")
+  head = makePicture(pathHead)
+  pathTurk = getMediaPath("kturkey.jpg")
+  turkey = makePicture(pathTurk)
+  pathGreen = getMediaPath("greenhead.png")
+  greenHead = makePicture(pathGreen)
+  pathBack = getMediaPath("back.jpg")
+  back = makePicture(pathBack)
+  pathPatt = getMediaPath("mapleleaf1.jpg")
+  pattern = makePicture(pathPatt)
+ 
+  
+  createText(back, "Here's looking at you,", 50, 10, 70)
+  createText(back, "Turkey Thanks!", 50, 160, 140)
+  head = rotatePic(head)
+  head = vpic(head)
+  head = tiltPic(head)
+  head = fixSpots(head)
+  head = redColor(head)
+  head = greenCopy(turkey, greenHead, head, 530, 60)
+  head = shrinkPic(head, 2)
+  card = chromakey(back, head, -1, 183)
+  card = addBackgroundPattern(card, pattern, 78, 79, 39, 40)
+  card = addShadowEffect(card, 40, 35, back.height, back.width)
+  show(card)
+  writePictureTo(card,"C:\Users\Mr.Fluffy\Desktop\card.png")
   
 
 def chris():
