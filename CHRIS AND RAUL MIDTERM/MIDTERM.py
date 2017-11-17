@@ -6,7 +6,7 @@ def a():
 
   show(img)
 
-def d():
+def drunkifi():
   #setMediaFolder()
   path = getMediaPath("2014.jpg")
   img = makePicture(path)
@@ -15,12 +15,11 @@ def d():
   img = blur(img)
   img = blur(img)
   img = blur(img)
-  img = blur(img)
-  img = blur(img)
+  img = double(img)
   
   show(img)
 
-def c():
+def csumb():
   #setMediaFolder()
   path = getMediaPath("CSUMB KEY.jpg")
   key = makePicture(path)
@@ -40,6 +39,25 @@ def c():
   blueUp(img)
   
   show(img)
+  
+def double(img):
+  pixels = getPixels(img)
+  for p in pixels:
+    if p.x < getWidth(img)-51 and p.y < getHeight(img)-1:
+      pR=getPixel(img, p.x+50, p.y)
+      bR = getBlue(pR)
+      b = getBlue(p)
+      setBlue(p, (bR+b)/2)
+      setBlue(pR, (bR+b)/2)
+      gR = getGreen(pR)
+      g = getGreen(p)
+      setGreen(p, (gR+g)/2)
+      setGreen(pR, (gR+g)/2)
+      rR = getRed(pR)
+      r = getRed(p)
+      setRed(p, (rR+r)/2)
+      setRed(pR, (rR+r)/2)
+  return img
 
 def blur(img):
   pixels = getPixels(img)
