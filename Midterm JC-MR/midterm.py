@@ -43,7 +43,7 @@ def addScanlines(image, increment_percent = .25, increments = 2):
 
 #Adds a transparent image to another image.
 #Increase transparency parameter to make the image more transparent.
-def addTransparentImage(targetX, targetY, transparency_level = 2):
+def addTransparentImage(source, targetX, targetY, transparency_level = 2):
   for x in range(targetX, source.width + targetX):
     for y in range(targetY, source.height + targetX):
       source_color = getPixel(source,x - targetX,y - targetY)
