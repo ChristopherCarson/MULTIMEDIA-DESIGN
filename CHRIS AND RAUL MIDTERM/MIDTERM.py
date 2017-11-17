@@ -1,10 +1,22 @@
 import math
 
+def a():
+  path = getMediaPath("2014.jpg")
+  img = makePicture(path)
+
+  show(img)
+
 def d():
   #setMediaFolder()
   path = getMediaPath("2014.jpg")
   img = makePicture(path)
   
+  img = blur(img)
+  img = blur(img)
+  img = blur(img)
+  img = blur(img)
+  img = blur(img)
+  img = blur(img)
   
   show(img)
 
@@ -28,7 +40,30 @@ def c():
   blueUp(img)
   
   show(img)
-  
+
+def blur(img):
+  pixels = getPixels(img)
+  for p in pixels:
+    if p.x < getWidth(img)-1 and p.y < getHeight(img)-1:
+      pR=getPixel(img, p.x+1, p.y)
+      pB=getPixel(img, p.x, p.y+1)
+      p2=getPixel(img, p.x+1, p.y+1)
+      bR = getBlue(pR)
+      bB = getBlue(pB)
+      b2 = getBlue(p2)
+      b = getBlue(p)
+      setBlue(p, (bR+bB+b2+b)/4)
+      gR = getGreen(pR)
+      gB = getGreen(pB)
+      g2 = getGreen(p2)
+      g = getGreen(p)
+      setGreen(p, (gR+gB+g2+g)/4)
+      rR = getRed(pR)
+      rB = getRed(pB)
+      r2 = getRed(p2)
+      r = getRed(p)
+      setRed(p, (rR+rB+r2+r)/4)
+  return img
   
 #Green screen function from previous assignment modified to take target x and y coordinates
 def waterMark(img, key, targetX, targetY, shadow):
@@ -51,7 +86,45 @@ def blueUp(pic):
   for p in pixels:
     b = getBlue(p)
     setBlue(p, b*1.9)
-  return pic  
+  return pic
+  
+#Surrounds an image with a background pattern by creating a larger blank image,
+#inserting a pattern image to create the background, and then printing the original image on top.
+#If the pattern image is smaller than the size of the new image, it will repeat to fill up space,
+#so a repeating vector image works best.
+def addBackgroundPattern(image, pattern, width_increase, height_increase, startX, startY):
+  #image - the original image.
+  #pattern - the pattern that will populate the background.
+  #width_increase - the total width that the new image will increase by over the original image.
+  #height_increase - the total height that the new image will increase by over the original image.
+  #startX - The the top-left x-coordinate where the image will be placed on the new_image.
+  #startY - The the top-left y-coordinate where the image will be placed on the new_image.
+  
+  new_width = width_increase + image.width
+  new_height = height_increase + image.height  
+  new_image = makeEmptyPicture(new_width,new_height)
+  
+  #Add pattern to new blank image.
+  patternX = 0
+  for x in range(0, new_width):
+    patternX += 1
+    if patternX == pattern.width: patternX = 0
+    patternY = 0 
+    for y in range(0, new_height):
+      patternY += 1
+      if patternY == pattern.height: patternY = 0 
+      pattern_color = makeColor(getPixel(pattern, patternX, patternY).color)
+      color_to_replace = getPixel(new_image, x,y)
+      setColor(color_to_replace, pattern_color)
+        
+  #Add original image to new image.
+  for x in range(0, image.width):
+      for y in range(0, image.height):
+        image_color = makeColor(getPixel(image, x, y).color)
+        color_to_replace = getPixel(new_image, startX + x - 1, startY + y - 1)
+        setColor(color_to_replace, image_color)       
+
+  return new_image   
   
 #Adds an artificial shading effect to the bottom and right sides of a chosen area inside of a photo.
 def addShadowEffect(image, startX, startY, height, width, shadow_depth = 20, shadow_offset = 10, blur_repetitions = 3):   
