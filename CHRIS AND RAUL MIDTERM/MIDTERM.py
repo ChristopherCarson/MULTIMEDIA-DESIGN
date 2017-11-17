@@ -1,7 +1,21 @@
 import math
 
+def drunkifi():
+  setMediaFolder()
+  path = getMediaPath("bar.jpg")
+  img = makePicture(path)
+  path = getMediaPath("beer.jpg")
+  beer = makePicture(path)
+  
+  mirror(img)
+  
+  img = addBackgroundPattern(img, beer, 100, 100, 50, 50)
+  img = addShadowEffect(img, 50, 50, img.height-100, img.width-100)
+
+  show(img)
+  
 def c():
-  #setMediaFolder()
+  setMediaFolder()
   path = getMediaPath("CSUMB KEY.jpg")
   key = makePicture(path)
   path = getMediaPath("CSUMB KEY 2.jpg")
@@ -10,17 +24,31 @@ def c():
   img = makePicture(path)
   path = getMediaPath("otter.jpg")
   otter = makePicture(path)
- 
+
   waterMark(img, key2, 50, 30, .3)
   waterMark(img, key, 50, 30, .7)
-  
+
   img = addBackgroundPattern(img, otter, 100, 100, 50, 50)
   img = addShadowEffect(img, 50, 50, img.height-100, img.width-100)
-  
+
   blueUp(img)
-  
+
   show(img)
-  
+
+#will take half of the picture and divide it into 4 pieces  
+def mirror(pic):
+  p1 = getWidth(pic)/2
+  p2 = getHeight(pic)/2
+  for y in range(0,p2):
+    for x in range(0,p1):
+      upL = getPixel(pic,x,y)
+      upR = getPixel(pic,getWidth(pic)-x-1,y)
+      bRt = getPixel(pic,getWidth(pic)-x-1,getHeight(pic)-y-1)
+      bLt = getPixel(pic,x,getHeight(pic)-y-1)
+      color1 = getColor(upL)
+      setColor(upR,color1)
+      setColor(bRt,color1)
+      setColor(bLt,color1)
 #Green screen function from previous assignment modified to take target x and y coordinates
 def waterMark(img, key, targetX, targetY, shadow):
   new_y = targetY
@@ -42,10 +70,10 @@ def blueUp(pic):
   for p in pixels:
     b = getBlue(p)
     setBlue(p, b*1.9)
-  return pic  
-  
+  return pic
+
 #Adds an artificial shading effect to the bottom and right sides of a chosen area inside of a photo.
-def addShadowEffect(image, startX, startY, height, width, shadow_depth = 20, shadow_offset = 10, blur_repetitions = 3):   
+def addShadowEffect(image, startX, startY, height, width, shadow_depth = 20, shadow_offset = 10, blur_repetitions = 3):
   #image - The image that the effect will be applied to.
   #startX - The starting x-coordinate of the area the effect will be applied to.
   #startY - The starting y-coordinate of the area the effect will be applied to.
@@ -58,7 +86,7 @@ def addShadowEffect(image, startX, startY, height, width, shadow_depth = 20, sha
   #Creates a matrix to store shading values.
   #Matrix contains x and y coordinates and determines each coordinate's shading value
   #by its right/bottom distance from the area that the effect is being applied to,
-  #stopping once it reaches the designated depth. 
+  #stopping once it reaches the designated depth.
   #Shading values are from 1.0 to 0.
   shadow_matrix = [[0 for i in xrange(height + shadow_depth)] for i in xrange(width + shadow_depth)]
   for x in range(shadow_offset - 1,width + shadow_depth - 1):
@@ -72,7 +100,7 @@ def addShadowEffect(image, startX, startY, height, width, shadow_depth = 20, sha
       elif x > width and y > height:
         dist = calculateDistance(width, height, x, y)
         if dist > shadow_depth: shadow_matrix[x][y] = 0
-        else: shadow_matrix[x][y] = (shadow_depth - dist) * (1.0 / shadow_depth)  
+        else: shadow_matrix[x][y] = (shadow_depth - dist) * (1.0 / shadow_depth)
 
   #Create Blur to smooth edges
   #Blur works by taking the average of each coordinate's shadow multiplier and the multipliers of its 8 surrounding neighbors.
@@ -84,18 +112,18 @@ def addShadowEffect(image, startX, startY, height, width, shadow_depth = 20, sha
         for i in range(-1, 2):
           for j in range(-1, 2):
             if i != 0 or j != 0: sum += shadow_matrix[x + i][y + j]
-        shadow_matrix[x][y] = sum / 9  
+        shadow_matrix[x][y] = sum / 9
 
   #Applies the shadow effect using the shading matrix to each pixel on the right and bottom side of the selected area.
   #Uses depth and offset values to determine where to shade.
   #Formula for applying the effect is color value * (1 - shading value)
   for x in range(0, width + shadow_depth - 1):
     for y in range(0, height + shadow_depth - 1):
-      if x >= width - 1 or y >= height - 1: 
+      if x >= width - 1 or y >= height - 1:
         pixel = getPixel(image, startX + x, startY + y)
         color = makeColor(pixel.red * (1 - shadow_matrix[x][y]), pixel.green * (1 - shadow_matrix[x][y]), pixel.blue * (1 - shadow_matrix[x][y]))
-        setColor(pixel, color)  
-  return image 
+        setColor(pixel, color)
+  return image
 
 def calculateDistance(x1,y1,x2,y2):
      dist = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
@@ -105,4 +133,4 @@ def calculateDistance(x1,y1,x2,y2):
 #pattern = get_pic()
 #border_image = addBackgroundPattern(image, pattern, 200, 200, 100, 150)
 #image_with_shadow = addShadowEffect(border_image, 100, 150, image.height, image.width)
-#show(image_with_shadow) 
+#show(image_with_shadow)
