@@ -42,24 +42,27 @@ def addScanlines(image, increment_percent = .25, increments = 2):
   return image
 
 #Adds a transparent image to another image.
-#Currently 50% opaque.    
-def addTransparentImage(source, target, targetX, targetY):
+#Increase transparency parameter to make the image more transparent.
+def addTransparentImage(source, target, targetX, targetY, transparency_level = 2):
   for x in range(targetX, source.width + targetX):
     for y in range(targetY, source.height + targetX):
       source_color = getPixel(source,x - targetX,y - targetY)
       target_color = getPixel(target,x,y)
       
-      sb_ratio = source_color.blue / 255.0
+      #Source image color ratios. 
       sr_ratio = source_color.red / 255.0
       sg_ratio = source_color.green / 255.0
+      sb_ratio = source_color.blue / 255.0
       
-      tb_ratio = target_color.blue / 255.0
+      #Target image color ratios.
       tr_ratio = target_color.red / 255.0
       tg_ratio = target_color.green / 255.0
+      tb_ratio = target_color.blue / 255.0
       
-      nb_ratio = ((sb_ratio - tb_ratio) / 2) + tb_ratio
-      ng_ratio = ((sg_ratio - tg_ratio) / 2) + tg_ratio
-      nr_ratio = ((sr_ratio - tr_ratio) / 2) + tr_ratio     
+      #The new color ratios. New color exists somewhere between the source and target image color.
+      nr_ratio = ((sr_ratio - tr_ratio) / transparency_level) + tr_ratio   
+      ng_ratio = ((sg_ratio - tg_ratio) / transparency_level) + tg_ratio
+      nb_ratio = ((sb_ratio - tb_ratio) / transparency_level) + tb_ratio  
 
       new_color = makeColor(255 * nr_ratio, 255 * ng_ratio, 255 * nb_ratio)
       setColor(getPixel(target, x, y), new_color)      
