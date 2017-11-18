@@ -68,6 +68,7 @@ def maxVolume():
     value = getSampleValue(sample)
     #sets the volume to half of the original sample
     setSampleValue(sample, value*factor)
+  goToEleven(sd)  
   play(sd) 
 
 #Write a new function called goToEleven, this function should 
@@ -82,4 +83,5 @@ def goToEleven(sound):
     if value > 0:
       setSample(sample,32767)
     if value < 0:
-      setSample(sample,-32768)    
+      setSample(sample,-32768)  
+  return sound      
