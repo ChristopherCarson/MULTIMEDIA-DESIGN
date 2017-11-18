@@ -1,22 +1,8 @@
 import math
 
-def a():
-  path = getMediaPath("2014.jpg")
-  img = makePicture(path)
-
-  show(img)
-  
-def createText(picture, text, size, x, y):
-  import java.awt.Font as Font
-  #text = requestString("Enter what you would like the card to say.")
-  #size = requestInteger("How big do you want the text?")
-  myFont = makeStyle("Arial", Font.BOLD, size) #you can change the font to anything in java awt
-  addTextWithStyle(picture, x, y, text, myFont, red)
-
+#This is the drunkifi filter. It takes an image, blurs it, creates a double vision effect, adds beer glasses to the border,
+#along with a drop shadow and finally puts the text "Don't Drive and Drive" on the image.
 def drunkifi():
-  #setMediaFolder()
-  path = getMediaPath("bar.jpg")
-  img = makePicture(path)
   path = getMediaPath("beer.jpg")
   beer = makePicture(path)
   
@@ -31,14 +17,12 @@ def drunkifi():
   
   show(img)
 
+#This is the CSUMB filter. It creates a blue over-tone, adds an otter border and places a CSUMB water mark in the image.
 def csumb():
-  #setMediaFolder()
   path = getMediaPath("CSUMB KEY.jpg")
   key = makePicture(path)
   path = getMediaPath("CSUMB KEY 2.jpg")
   key2 = makePicture(path)
-  path = getMediaPath("2014.jpg")
-  img = makePicture(path)
   path = getMediaPath("otter.jpg")
   otter = makePicture(path)
  
@@ -52,6 +36,24 @@ def csumb():
   
   show(img)
   
+# A helper function that both sets the media folder we will be working with and loades the images that we can use to call our filters
+def loadImages():
+  setMediaFolder()
+  path = getMediaPath("bar.jpg")
+  imgBar = makePicture(path)
+  path = getMediaPath("2014.jpg")
+  img2014 = makePicture(path)
+
+#A function that creates text on the image.
+def createText(picture, text, size, x, y):
+  import java.awt.Font as Font
+  #text = requestString("Enter what you would like the card to say.")
+  #size = requestInteger("How big do you want the text?")
+  myFont = makeStyle("Arial", Font.BOLD, size) #you can change the font to anything in java awt
+  addTextWithStyle(picture, x, y, text, myFont, red)
+
+# This is a fun function that creates a double image of the image by separaing it 50 pixels apart. It averages out
+# the RGB values of each pixel 50 pixels apart and resets the colors.
 def double(img):
   pixels = getPixels(img)
   for p in pixels:
@@ -71,6 +73,7 @@ def double(img):
       setRed(pR, (rR+r)/2)
   return img
 
+# This function uses a modified Gaussian blur to blur the entire image.
 def blur(img):
   pixels = getPixels(img)
   for p in pixels:
@@ -209,6 +212,7 @@ def addShadowEffect(image, startX, startY, height, width, shadow_depth = 20, sha
         setColor(pixel, color)  
   return image 
 
+#A helper function that finds the distance between two coordinates.
 def calculateDistance(x1,y1,x2,y2):
      dist = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
      return dist
