@@ -107,23 +107,27 @@ def createBinaryLayer(width, height, freq_denominator = 10):
   return image
 
 #Enhances the green or blue in an image while reducing red and blue. Gives serious green tint.
-def enhanceGreenOrBlue(image, green = true, blue = false):
+def enhanceGreenOrBlue(image, green = true):
   pixels = getPixels(image)
+  
   rvalue = .3
   gvalue = .7
   bvalue = .7
   if green == true: gvalue = 1.5
-  elif blue == true: bvalue = 1.5
+  else: bvalue = 1.5
+  
   for p in pixels:
     setRed(p, p.red * rvalue)
     setGreen(p, p.green * gvalue)
     setBlue(p, p.blue * bvalue)
 
 #Deus Ex Machina Filter  
-def DEM_filter(image):
+def DEM_filter(image, green = true):
+  #image - the image to create a filtered version of.
+  #green - if true, the image is filtered in green. If false, blue.
   new_image = simpleCopy(image)
   binaryLayer = createBinaryLayer(new_image.width, new_image.height)
   addTransparentImage(binaryLayer, new_image, 0, 0, 3)
   addScanlines(new_image)
-  enhanceGreenOrBlue(new_image)
+  enhanceGreenOrBlue(new_image, green)
   return new_image
