@@ -69,4 +69,17 @@ def maxVolume():
     #sets the volume to half of the original sample
     setSampleValue(sample, value*factor)
   play(sd) 
-  
+
+#Write a new function called goToEleven, this function should 
+#take a sound as a parameter. For each sample, if the sample 
+#value is greater than 0, it should set the sample value to 
+#the maximum possible value: 32767. If the sample value is 
+#less than 0, it should set the sample value to the minimum 
+#possible value: -32768.    
+def goToEleven(sound):
+  for sample in getSamples(sound):
+    value = getSample(sample)
+    if value > 0:
+      setSample(sample,32767)
+    if value < 0:
+      setSample(sample,-32768)    
