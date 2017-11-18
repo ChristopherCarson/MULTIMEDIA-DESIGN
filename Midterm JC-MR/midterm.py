@@ -106,13 +106,18 @@ def createBinaryLayer(width, height, freq_denominator = 10):
       addTextWithStyle(image,x,y + (font.size * index),str(binary), font, makeColor(rand_color))
   return image
 
-#Enhances the green in an image while reducing red and blue. Gives serious green tint.
-def enhanceGreen(image):
+#Enhances the green or blue in an image while reducing red and blue. Gives serious green tint.
+def enhanceGreenOrBlue(image, green = true, blue = false):
   pixels = getPixels(image)
+  rvalue = .3
+  gvalue = .7
+  bvalue = .7
+  if green == true: gvalue = 1.5
+  elif blue == true: bvalue = 1.5
   for p in pixels:
-    setRed(p, .3)
-    setGreen(p, p.green * 1.5)
-    setBlue(p, p.blue * .7)
+    setRed(p, p.red * rvalue)
+    setGreen(p, p.green * gvalue)
+    setBlue(p, p.blue * bvalue)
 
 #Deus Ex Machina Filter  
 def DEM_filter(image):
@@ -120,5 +125,5 @@ def DEM_filter(image):
   binaryLayer = createBinaryLayer(new_image.width, new_image.height)
   addTransparentImage(binaryLayer, new_image, 0, 0, 3)
   addScanlines(new_image)
-  enhanceGreen(new_image)
+  enhanceGreenOrBlue(new_image)
   return new_image
