@@ -84,7 +84,7 @@ def addScanlines(image, increment_percent = .25, increments = 2):
       if scan_factor <= 0.0: scan_increment = true
   return image
 
-#Creates a series of random 1's and 0's in byte format vertically over a blank layer image.    
+#Displays a series of random 1's and 0's in string format vertically over a blank layer image.    
 def createBinaryLayer(width, height, freq_denominator = 10):
   #width, height - used to determine the size of the binary layer image.
   #frequency_denominator - determines how frequent the bytes will be. Smaller number = greater frequency.
@@ -92,7 +92,7 @@ def createBinaryLayer(width, height, freq_denominator = 10):
   import java.awt.Font as Font
   image = makeEmptyPicture(width, height)
   
-  #Creates the byte strings based on the frequency parameter.
+  #Creates the strings based on the frequency parameter.
   for count in range(0, (image.width + image.height) / freq_denominator):
     #randomizes their location.
     x = randint(0, image.width - 1)
