@@ -2,7 +2,7 @@ import math
 
 #This is the drunkifi filter. It takes an image, blurs it, creates a double vision effect, adds beer glasses to the border,
 #along with a drop shadow and finally puts the text "Don't Drive and Drive" on the image.
-def drunkifi():
+def drunkifi(img):
   path = getMediaPath("beer.jpg")
   beer = makePicture(path)
   
@@ -16,9 +16,10 @@ def drunkifi():
   img = addShadowEffect(img, 50, 50, img.height-100, img.width-100)
   
   show(img)
+  return img
 
 #This is the CSUMB filter. It creates a blue over-tone, adds an otter border and places a CSUMB water mark in the image.
-def csumb():
+def csumb(img):
   path = getMediaPath("CSUMB KEY.jpg")
   key = makePicture(path)
   path = getMediaPath("CSUMB KEY 2.jpg")
@@ -35,14 +36,8 @@ def csumb():
   blueUp(img)
   
   show(img)
+  return img
   
-# A helper function that both sets the media folder we will be working with and loades the images that we can use to call our filters
-def loadImages():
-  setMediaFolder()
-  path = getMediaPath("bar.jpg")
-  imgBar = makePicture(path)
-  path = getMediaPath("2014.jpg")
-  img2014 = makePicture(path)
 
 #A function that creates text on the image.
 def createText(picture, text, size, x, y):
