@@ -55,7 +55,7 @@ def maxSample():
   for s in getSamples(sd):
     louder = mult * getSampleValue(s)#increases volume by mult
     setSampleValue(s, louder)  
-  return large, mult  
+  return large  
          
 #You can use your maxSample function to write a new function 
 #called maxVolume that increases the volume of each sample 
@@ -69,3 +69,4 @@ def maxVolume():
     #sets the volume to half of the original sample
     setSampleValue(sample, value*factor)
   play(sd) 
+  
