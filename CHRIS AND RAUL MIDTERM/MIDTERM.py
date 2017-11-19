@@ -1,5 +1,6 @@
 import math
 
+<<<<<<< HEAD
 def a():
   path = getMediaPath("2014.jpg")
   img = makePicture(path)
@@ -21,12 +22,32 @@ def drunkifi():
 
 def csumb():
   #setMediaFolder()
+=======
+#This is the drunkifi filter. It takes an image, blurs it, creates a double vision effect, adds beer glasses to the border,
+#along with a drop shadow and finally puts the text "Don't Drive and Drive" on the image.
+def drunkifi(img):
+  path = getMediaPath("beer.jpg")
+  beer = makePicture(path)
+  
+  img = blur(img)
+  img = double(img)
+  
+  createText(img, "DON'T DRINK", 70, 60,60)
+  createText(img, "AND DRIVE!", 70, 70,390)
+  
+  img = addBackgroundPattern(img, beer, 100, 100, 50, 50)
+  img = addShadowEffect(img, 50, 50, img.height-100, img.width-100)
+  
+  show(img)
+  return img
+
+#This is the CSUMB filter. It creates a blue over-tone, adds an otter border and places a CSUMB water mark in the image.
+def csumb(img):
+>>>>>>> drunkifi
   path = getMediaPath("CSUMB KEY.jpg")
   key = makePicture(path)
   path = getMediaPath("CSUMB KEY 2.jpg")
   key2 = makePicture(path)
-  path = getMediaPath("2014.jpg")
-  img = makePicture(path)
   path = getMediaPath("otter.jpg")
   otter = makePicture(path)
  
@@ -39,6 +60,62 @@ def csumb():
   blueUp(img)
   
   show(img)
+  return img
+  
+
+#A function that creates text on the image.
+def createText(picture, text, size, x, y):
+  import java.awt.Font as Font
+  #text = requestString("Enter what you would like the card to say.")
+  #size = requestInteger("How big do you want the text?")
+  myFont = makeStyle("Arial", Font.BOLD, size) #you can change the font to anything in java awt
+  addTextWithStyle(picture, x, y, text, myFont, red)
+
+# This is a fun function that creates a double image of the image by separaing it 50 pixels apart. It averages out
+# the RGB values of each pixel 50 pixels apart and resets the colors.
+def double(img):
+  pixels = getPixels(img)
+  for p in pixels:
+    if p.x < getWidth(img)-51 and p.y < getHeight(img)-1:
+      pR=getPixel(img, p.x+50, p.y)
+      bR = getBlue(pR)
+      b = getBlue(p)
+      setBlue(p, (bR+b)/2)
+      setBlue(pR, (bR+b)/2)
+      gR = getGreen(pR)
+      g = getGreen(p)
+      setGreen(p, (gR+g)/2)
+      setGreen(pR, (gR+g)/2)
+      rR = getRed(pR)
+      r = getRed(p)
+      setRed(p, (rR+r)/2)
+      setRed(pR, (rR+r)/2)
+  return img
+
+# This function uses a modified Gaussian blur to blur the entire image.
+def blur(img):
+  pixels = getPixels(img)
+  for p in pixels:
+    if p.x < getWidth(img)-1 and p.y < getHeight(img)-1:
+      pR=getPixel(img, p.x+1, p.y)
+      pB=getPixel(img, p.x, p.y+1)
+      p2=getPixel(img, p.x+1, p.y+1)
+      bR = getBlue(pR)
+      bB = getBlue(pB)
+      b2 = getBlue(p2)
+      b = getBlue(p)
+      setBlue(p, (bR+bB+b2+b)/4)
+      gR = getGreen(pR)
+      gB = getGreen(pB)
+      g2 = getGreen(p2)
+      g = getGreen(p)
+      setGreen(p, (gR+gB+g2+g)/4)
+      rR = getRed(pR)
+      rB = getRed(pB)
+      r2 = getRed(p2)
+      r = getRed(p)
+      setRed(p, (rR+rB+r2+r)/4)
+  return img
   
 def double(img):
   pixels = getPixels(img)
@@ -197,6 +274,7 @@ def addShadowEffect(image, startX, startY, height, width, shadow_depth = 20, sha
         setColor(pixel, color)  
   return image 
 
+#A helper function that finds the distance between two coordinates.
 def calculateDistance(x1,y1,x2,y2):
      dist = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
      return dist
