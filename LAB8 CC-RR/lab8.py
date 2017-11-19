@@ -59,8 +59,7 @@ def changeVolume(factor):
 #You may find it useful to use the Python function 
 #max(x, y) that takes two values (x and y) and returns 
 #the larger of the two.
-def maxSample():
-  sd = findS()
+def maxSample(sd):
   large=0
   for sample in getSamples(sd):
     #looks for the largest sample
@@ -73,7 +72,8 @@ def maxSample():
 #value returned by your maxSample function. 
 def maxVolume():
   sd = findS()
-  factor = maxSample()
+  large = maxSample(sd)
+  factor = 32767/large
   for sample in getSamples(sd):
     value = getSampleValue(sample)
     #sets the volume to half of the original sample
@@ -88,9 +88,9 @@ def maxVolume():
 #possible value: -32768.    
 def goToEleven(sound):
   for sample in getSamples(sound):
-    value = getSample(sample)
+    value = getSampleValue(sample)
     if value > 0:
-      setSample(sample,32767)
+      setSampleValue(sample,32767)
     if value < 0:
-      setSample(sample,-32768)  
+      setSampleValue(sample,-32768)  
   return sound      
