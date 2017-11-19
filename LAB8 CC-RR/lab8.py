@@ -8,24 +8,38 @@ def findS():
 def testS():
   sd = findS()
   return getSampleValueAt(sd,10000)
+  
+  
+# This function answers the question: What are the sample values at indicies 
+#10730 and 20350 both before and after the function is run?
+def test2(sound):
+  v = getSampleValueAt(sound, 10730)
+  print v
+  v = getSampleValueAt(sound, 20350)
+  print v
+  increaseVolume(sound)
+  v = getSampleValueAt(sound, 10730)
+  print v
+  v = getSampleValueAt(sound, 20350)
+  print v
 
 #Increase the volume
-def increaseVolumeRange():
+def increaseVolume():
   sd = findS()
-  for sample in range(0, getLength(sd)):
-    value = getSampleValueAt(sd, sample)
+  for sample in getSamples(sd):
+    value = getSampleValue(sample)
     #increases the volume to double the original sample
-    setSampleValueAt(sd, sample, value * 2)
+    setSampleValue(sample, value * 2)
   play(sd)  
 
 #1. Write a function called decreaseVolume that takes a 
 #sound object and reduces the volume by half 
 def decreaseVolume():
   sd = findS()
-  for sample in range(0, getLength(sd)):
-    value = getSampleValueAt(sd, sample)
+  for sample in getSamples(sd):
+    value = getSampleValue(sample)
     #sets the volume to half of the original sample
-    setSampleValueAt(sd, sample, value / 2)
+    setSampleValue(sample, value / 2)
   play(sd)
 
 #2. Write a function called changeVolume that takes a sound 
@@ -36,7 +50,7 @@ def changeVolume(factor):
   for sample in getSamples(sd):
     value = getSampleValue(sample)
     #sets the volume to half of the original sample
-    setSampleValue(sample, value*factor)
+    setSampleValue(sample, value * factor)
   play(sd)   
   
 #More Volume 
@@ -48,13 +62,9 @@ def changeVolume(factor):
 def maxSample():
   sd = findS()
   large=0
-  for s in getSamples(sd):
+  for sample in getSamples(sd):
     #looks for the largest sample
-    large = max(large,getSampleValue(s))
-  mult = 32767.0/large #finds the multiplier
-  for s in getSamples(sd):
-    louder = mult * getSampleValue(s)#increases volume by mult
-    setSampleValue(s, louder)  
+    large = max(large,getSampleValue(sample))
   return large  
          
 #You can use your maxSample function to write a new function 
@@ -67,8 +77,7 @@ def maxVolume():
   for sample in getSamples(sd):
     value = getSampleValue(sample)
     #sets the volume to half of the original sample
-    setSampleValue(sample, value*factor)
-  goToEleven(sd)  
+    setSampleValue(sample, value*factor) 
   play(sd) 
 
 #Write a new function called goToEleven, this function should 
