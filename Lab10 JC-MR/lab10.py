@@ -1,3 +1,5 @@
+#Lab 10 - CST 205
+#John Coffelt, Michael Rose
 import random
 
 #Warm Up
