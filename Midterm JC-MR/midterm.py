@@ -32,9 +32,9 @@ def addTransparentImage(source, target, targetX, targetY, transparency_level = 2
   
   assert transparency_level >= 1, "Transparency level cannot be less than 1."
   for x in range(targetX, source.width + targetX):
-    for y in range(targetY, source.height + targetX):
+    for y in range(targetY, source.height + targetY):
       source_color = getPixel(source,x - targetX,y - targetY)
-      if makeColor(source_color.color) != white: #Pure whites are not transferred.
+      if distance(makeColor(source_color.color),white) > 45: #Colors close to white are not transferred.
         target_color = getPixel(target,x,y)
       
         #The percentage out of 255 for each color value.
