@@ -46,12 +46,8 @@ def hangman():
     char = char.upper()
     
     #Here we check to see if the letter was already guessed
-    for q in range (len(printWord)):
-      if char == printWord[q]:
-        newChar = 0
-    for v in range (len(wrongGuesses)):
-      if char == wrongGuesses[v]:
-        newChar = 0
+    if char in printWord or char in wrongGuesses:
+      newChar = 0
     
     if newChar == 0:
       print "You've already guessed the letter %s, please choose a new letter." % (char)
@@ -86,9 +82,8 @@ def hangman():
     
     #Here, we set the won flag to 1, then test. If there are any dashes left, we reset the flag to 0.
     won = 1
-    for w in range (len(printWord)):
-      if printWord[w] == "_":
-        won = 0
+    if "_" in printWord:
+      won = 0
         
     if won == 1: #If flag remains set, play has won.
       print "Congrats! You've won!"
