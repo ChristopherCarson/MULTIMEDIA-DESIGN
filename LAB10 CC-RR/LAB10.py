@@ -15,7 +15,7 @@ def warmUp():
     name = requestString("type stop to end loop")
     
 #Hangman: 1.Output a brief description of the game of hangman and how to play
-def h():
+def hangman():
   print ("Welcome to Hang Man!")
   print ("The object of the game is to figure out a word by guessing characters.")
   print ("Each time you guess a character that is not in the word, the hangman gets another body part.")
@@ -33,15 +33,19 @@ def h():
   printWord = ""
   for chars in word:
     printWord = printWord + "_ "
-    
-  print printWord
-  
+
   #Main while loop
   while numberOfWrong < 6 and won == 0:
     rightFlag = 0
+    newChar = 1
     
-    newChar = 1    
+    print printWord
+    print "Your incorrect guesses are: %s" % (wrongGuesses)
+      
     char = requestString("Enter a character.")
+    char = char.upper()
+    
+    #Here we check to see if the letter was already guessed
     for q in range (len(printWord)):
       if char == printWord[q]:
         newChar = 0
@@ -51,9 +55,8 @@ def h():
     
     if newChar == 0:
       print "You've already guessed the letter %s, please choose a new letter." % (char)
-      rightFlag = 1
+      rightFlag = 1 #If the letter was already guessed, we set the rightFlag so it doesn't count as an incorrect guess
 
-    char = char.upper()
     if char.isalpha() and len(char) == 1: #This checks to make sure the user is only entering one character
       
       newWord = "" #This word is a temporary word used to recreate the printWord
@@ -71,13 +74,12 @@ def h():
     else:
       print "Please enter only a character."
       rightFlag = 1 #Set the flag so an incorrect entry doesn't get tracked as a wrong guess.
-    
+      
     #If the guess is incorrect, print the following letting the play know how many guesses they have left.
     if rightFlag == 0:
       numberOfWrong += 1
       wrongGuesses = wrongGuesses + char + " "
       print "Incorrect guess."
-      print "You have guessed wrong %d times." % (numberOfWrong)
       print "You have %d guesses remaining." % (6-numberOfWrong)
       if numberOfWrong == 6: #If guesses = 6, then the player looses.
         print "Sorry, you loose!"
@@ -91,32 +93,6 @@ def h():
     if won == 1: #If flag remains set, play has won.
       print "Congrats! You've won!"
     else:
-      print printWord
-      print "Your incorrect guesses are: %s" % (wrongGuesses)
       won = 0
   
-  
-  
-  
-  
-  
-  
-  
-  
-#2.The word to guess can be hard-coded in your program, but it should be easy to 
-#change the word; a list of words
-
-#3.Output the appropriate number of dashes and spaces to represent the phrase 
-
-#4.Continuously read guesses of a letter from the user and fill in the corresponding blanks 
-#report that the user has made an incorrect guess if not in the current word
-#The user MUST enter letters - if the user enters anything that is not a letter, you 
-#should print an error message and reprompt for input. Your program should handle input 
-#either as uppercase or lowercase letters
-
-#5.Each turn you will display the phrase as dashes but with any already guessed letters 
-#filled in, as well as which letters have been incorrectly guessed so far and how many 
-#guesses the user has remaining.
-
-#6.You MUST use at least 3 string methods or operators in a useful manner 
  
