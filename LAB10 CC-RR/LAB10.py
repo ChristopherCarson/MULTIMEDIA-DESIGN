@@ -23,7 +23,7 @@ def hangman():
   print ("Your clue to the length of the word are the amount of dashes. Each dash represents an unguessed character.")
   print "Good luck!"
   
-  word = "CALIFORNIA" #This is the secret word that needs to be guessed
+  word = "california" #This is the secret word that needs to be guessed. 
   numberOfWrong = 0 #Variable for the number of incorrect guesses
   won = 0 #This is a flag to determine if player has won. If set to 1, player wins
   wrongGuesses = "" #word to store incorrect guesses
@@ -59,7 +59,7 @@ def hangman():
       
       #In this loop we check to see if the user guessed a character that's in the secret word
       for x in range (len(word)):
-        if char == word[x]:
+        if char == word[x].upper():
           newWord = newWord + char + " "
           rightFlag = 1 #This flag is used to determin if the user guessed a wrong character. If flag is never set to 1, we know they guessed right
         else:
