@@ -121,6 +121,19 @@ def enhanceGreenOrBlue(image, green = true):
     setGreen(p, p.green * gvalue)
     setBlue(p, p.blue * bvalue)
 
+#Tints the image blue in terms of the CSUMB blue color
+#That color is 0 48 92
+#intensity is how much blue you want in the image with 1 being completely blue
+def csumbTint(pic, intensity):
+  assert intensity > 0 and intensity < 1, "Intensity must be between 0 and 1"
+  pixels = getPixels(pic)
+  for p in pixels:
+  #create new rgb values based on the intensity, then set the color of the pixel
+    newRed = 0 * intensity + getRed(p)*(1 - intensity)
+    newGreen = 48 * intensity + getGreen(p)*(1 - intensity)
+    newBlue = 92 * intensity + getBlue(p)*(1 - intensity)
+    setColor(p, makeColor(newRed, newGreen, newBlue))
+
 #Deus Ex Machina Filter  
 def DEM_filter(image, green = true):
   #image - the image to create a filtered version of.
@@ -130,4 +143,14 @@ def DEM_filter(image, green = true):
   addTransparentImage(binaryLayer, new_image, 0, 0, 3)
   addScanlines(new_image)
   enhanceGreenOrBlue(new_image, green)
+  return new_image
+
+#CSUMB Filter
+#currently puts an otter in the image and tints the picture blue
+#set the media folder first so it reads the otter1.jpg
+def csumbFilter(image):
+  new_image = simpleCopy(image)
+  csumbTint(new_image,0.45)
+  otter = makePicture("otter1.jpg")
+  addTransparentImage(otter, new_image, 0,0,3)
   return new_image
