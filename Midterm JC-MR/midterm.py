@@ -134,6 +134,16 @@ def csumbTint(pic, intensity):
     newBlue = 92 * intensity + getBlue(p)*(1 - intensity)
     setColor(p, makeColor(newRed, newGreen, newBlue))
 
+#Adds the CSUMB blue color to a border around the image.
+def addCSUMBBorder(image, border_size = 10):
+  #(0, 42, 78) makes dark blue.
+  new_image = makeEmptyPicture(getWidth(image) + (border_size * 2),getHeight(image) + (border_size * 2), makeColor(0, 42, 78))
+  for x in range(0, getWidth(image)):
+    for y in range(0, getHeight(image)):
+      color_to_copy = makeColor(getPixel(image,x,y).color)
+      setColor(getPixel(new_image,border_size + x,border_size + y),color_to_copy)
+  return new_image
+
 #Deus Ex Machina Filter  
 def DEM_filter(image, green = true):
   #image - the image to create a filtered version of.
@@ -153,4 +163,5 @@ def csumbFilter(image):
   csumbTint(new_image,0.45)
   otter = makePicture("otter1.jpg")
   addTransparentImage(otter, new_image, 0,0,3)
+  new_image = addCSUMBBorder(new_image)
   return new_image
