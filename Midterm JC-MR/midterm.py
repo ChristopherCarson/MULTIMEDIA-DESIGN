@@ -162,6 +162,6 @@ def csumbFilter(image):
   new_image = simpleCopy(image)
   csumbTint(new_image,0.45)
   otter = makePicture("otter1.jpg")
-  addTransparentImage(otter, new_image, 0,0,3)
+  addTransparentImage(otter, new_image, 0, new_image.height - otter.height,2)
   new_image = addCSUMBBorder(new_image)
   return new_image
