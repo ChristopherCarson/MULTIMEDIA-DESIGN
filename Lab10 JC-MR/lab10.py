@@ -11,11 +11,7 @@ def whileTest():
 
 #Problem 1: Call this function to start the hangman game
 def hangman():
-#Things to do:
-#Add more words to list
-#remove duplicate code for correct and incorrect (new function)
-#make more efficient possibly
-  words = "fringe foul grinder locust promised antique spell front sissy feign carrion alphabet sideshow picnic infinite hoax natural wealthy friend pattern ink sprites parade volcanic cast".split() #words separated with a space
+  words = "fringe foul grinder locust promised antique spell front sissy feign carrion alphabet sideshow picnic infinite hoax natural wealthy friend pattern ink sprites parade volcanic cast month detailed ordinary flight pinch foot high hangman".split() #words separated with a space
   wordIndex = random.randint(0, len(words)-1) #pick a random number
   print "Welcome to hangman.\n The rules are simple.\nA blank word will show up and you have to guess it by picking letters in the word!"
   print "If you guess incorrectly 6 times, you lose.\nIf you guess the word before that, you win!\nON WITH THE SHOW!!!!\n"
