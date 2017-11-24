@@ -68,8 +68,8 @@ class Player:
 
     #Moves the player object to another room if the room has a connected room in the provided direction.   
     def move(self, direction):
-      assert direction in self.location.connections.keys(), "Not a valid direction!"
       room = self.location
+      assert direction in room.connections.keys(), "Not a valid direction!"
       if room.connections[direction] != "":
         self.location = room.getRoom(room.connections[direction])
         return true
