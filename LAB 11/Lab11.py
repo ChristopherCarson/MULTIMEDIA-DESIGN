@@ -70,8 +70,7 @@ class Player:
     def move(self, direction):
       room = self.location
       direction = direction.upper()
-      assert direction in room.connections.keys(), "Not a valid direction!"
-      if room.connections[direction] != "":
+      if direction in room.connections.keys() and room.connections[direction] != "":
         self.location = room.getRoom(room.connections[direction])
         return true
       else:
