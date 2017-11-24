@@ -75,7 +75,8 @@ class Player:
         return true
       else:
         return false
-                               
+
+#Game begins here.    
 r1 = Room("Room One", "This is room one. It's dusty! There is a sign on the wall that says 'Testing Room 1'.")
 r2 = Room("Room Two", "This room seems awfully empty. Must be another test room.")
 r3 = Room("Room Three", "This room is empty except for a small bug sitting in the corner. The bug eyes you suspiciously.")
