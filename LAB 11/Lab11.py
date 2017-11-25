@@ -1,17 +1,19 @@
 #Lab 11
 
+import time
+
 #Class for creating an object that represents a room in a text-based adventure game.
 class Room:
     __instances = []
     
     #Initializes room object with optional title and description.
-    def __init__(self, title = "", description = ""):
+    def __init__(self, title = "", description = "", inventory = ""):
       Room.__instances.append(self)
       self.index = Room.__instances.index(self)
       self.title = title
       self.description = description
       self.connections = {'N':'', 'E':'', 'S':'', 'W':'', 'U':'', 'D':''} #defines moveable directions
-      self.inventory = {} #Defines interactable objects inside the room.
+      self.inventory = inventory #Defines interactable objects inside the room.
     
     #Generates the string that displays information about where the player can go from the room.
     def __genConString(self):
@@ -76,17 +78,92 @@ class Player:
       else:
         return false
 
-#Game begins here.    
-r1 = Room("Room One", "This is room one. It's dusty! There is a sign on the wall that says 'Testing Room 1'.")
-r2 = Room("Room Two", "This room seems awfully empty. Must be another test room.")
-r3 = Room("Room Three", "This room is empty except for a small bug sitting in the corner. The bug eyes you suspiciously.")
-r4 = Room("Room Four", "This room has 'TESTING' written all over the walls in various colors of Crayon.")
+#Descriptions for each room stored in a multi-line triple quote string.
+d1 = "You are coming home from work and hear something rusting inside."
+d2 = """You sneak over to the fence that separates your house from the neighbors to the East of you. You've never trusted that strange family. You suspect they are all 
+part of a traveling circus. That would explain their bearded mother and the siamese twin sisters. Who knows what else might be living with them. You inspect the fence 
+for signs that anyone has climbed over or dug under. You find what appear to be the tracks of a flea, but can't be certain."""
+d3 = "Nothing yet"
+d4 = """You enter the front of the house. The lights are off and for now, it is almost completely quiet. The faint sounds of a nearby clock's internal mechanisms are 
+the only noise. To the west, the door to the patio is slightly ajar and a mild breeze is coming through. To the north lies the dining area."""
+d5 = """Upon the entering the dining room, a sour, stale stench hits your face. What is that? Has some foul smelling creature been in here? Or do I just need to take 
+out the gargbage? You look around the room and notice what appear to be smudgy tracks leading outside throug the North door of the dining area."""
+d6 = "Nothing yet"
+d7 = "Nothing yet"
+d8 = "Nothing yet"
+d9 = "Nothing yet"
+d10 = """The door creaks open as you enter a small shed. From the light coming through the door, you can barely make out what looks like a sea of tools filling up the room. 
+You notice an old chainsaw sitting on the table in the back. It is clear from the amount of dust on everything that no one has been in here for quite some time."""
+d11 = """You take a moment in the fresh breeze to clear your head. Surely you must be imaging all of this. You remember being haunted by something in the dark at camp as a 
+little kid. No one else would believe you, but you know what you saw. Those terrible eyes and such sharp fangs. Could it be back? No, of course not. It couldn't possibly be... could it?!"""
+d12 = """You approach a chain-link fence. The fence is in disrepair and no longer stands straight, but is still managing to do its job. 
+In the distance over the fence, you can almost make out what appears to be a better game. Unfortunately, you have no way to get to it."""
 
+#Game begins here.
+#Initiate the 12 room object instances 
+r1 = Room("Front Porch", d1, "chainsaw")
+r2 = Room("East Fence", d2)
+r3 = Room("Covered Patio", d3)
+r4 = Room("Inside House", d4)
+r5 = Room("Dining Area", d5)
+r6 = Room("Gym", d6)
+r7 = Room("Outside South", d7)
+r8 = Room("Outside West", d8)
+r9 = Room("Pool House", d9)
+r10 = Room("Shed", d10)
+r11 = Room("Outside North", d11)
+r12 = Room("North Fence", d12)
+
+#Initiate the connections the rooms have with one another.
 r1.connectRoom(r2.index,"e")
-r1.connectRoom(r3.index,"n")
-r1.connectRoom(r4.index,"S")
+r1.connectRoom(r4.index,"n")
+r4.connectRoom(r3.index,"w")
+r4.connectRoom(r5.index,"n")
+r7.connectRoom(r5.index,"s")
+r7.connectRoom(r6.index,"w")
+r7.connectRoom(r9.index,"n")
+r7.connectRoom(r2.index,"e")
+r8.connectRoom(r6.index,"s")
+r8.connectRoom(r9.index,"e")
+r8.connectRoom(r10.index,"n")
+r11.connectRoom(r9.index,"s")
+r11.connectRoom(r12.index,"n")
 
+def printIntro():
+  printNow("""Welcome to The Code Blooded Houese of Horror!
+While in each room, you will be told which direction you can move. You can move in that direction by typing N for North, E for East, W for West and S for South.
+Type help to return to these instruction anytime. Type exit to quite the game.\n""")
+  time.sleep(5)
+  
+def useObject(room):
+  if room.inventory == "":
+    printNow("There is nothing to use in this room")
+  elif room.inventory == "chainsaw":
+    printNow("After many attempts, you finally get the chainsaw running! It runs out of gas 5 seconds later.")
+  
+#Initate the player object.
 player = Player(r1)
-printNow(player.location.outString())
-player.move("S")
-printNow(player.location.outString())
+end = false #Variable to flag whether the player wishes to end the game and exit.
+correctInput = "NSEW"
+
+printIntro()
+
+#Main while loop.
+while end == false:
+  printNow(player.location.outString())
+  command = requestString("What direction would you like to move?\nN = North\nE = East\nW = West\nS = South\n"+
+  "'use' = use item in room\n'help' = instructions\n'exit' = quite game")
+  if command.upper() == "EXIT":
+    end = true
+  elif command.upper() == "HELP":
+    printIntro()
+  elif command.upper() == "USE":
+    useObject(player.location)
+  elif command.upper() in correctInput:
+    player.move(command)
+  else:
+    printNow("I'm sorry, that's not a correct command... Please try again")
+  
+printNow("No one likes a quitter.")
+
+
