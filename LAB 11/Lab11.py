@@ -137,7 +137,7 @@ Type help to return to these instruction anytime. Type exit to quite the game.\n
   
 def useObject(room):
   if room.inventory == "":
-    printNow("There is nothing to use in this room")
+    printNow("There is nothing to use in this room.")
   elif room.inventory == "chainsaw":
     printNow("After many attempts, you finally get the chainsaw running! It runs out of gas 5 seconds later.")
   
