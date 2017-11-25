@@ -130,9 +130,9 @@ r11.connectRoom(r9.index,"s")
 r11.connectRoom(r12.index,"n")
 
 def printIntro():
-  printNow("""Welcome to The Code Blooded Houese of Horror!
+  printNow("""Welcome to The Code Blooded House of Horror!
 While in each room, you will be told which direction you can move. You can move in that direction by typing N for North, E for East, W for West and S for South.
-Type help to return to these instruction anytime. Type exit to quite the game.\n""")
+Type help to return to these instruction anytime. Type exit to quit the game.\n""")
   time.sleep(5)
   
 def useObject(room):
