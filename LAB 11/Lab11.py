@@ -101,7 +101,7 @@ In the distance over the fence, you can almost make out what appears to be a bet
 
 #Game begins here.
 #Initiate the 12 room object instances 
-r1 = Room("Front Porch", d1, "chainsaw")
+r1 = Room("Front Porch", d1)
 r2 = Room("East Fence", d2)
 r3 = Room("Covered Patio", d3)
 r4 = Room("Inside House", d4)
@@ -110,7 +110,7 @@ r6 = Room("Gym", d6)
 r7 = Room("Outside South", d7)
 r8 = Room("Outside West", d8)
 r9 = Room("Pool House", d9)
-r10 = Room("Shed", d10)
+r10 = Room("Shed", d10, "chainsaw")
 r11 = Room("Outside North", d11)
 r12 = Room("North Fence", d12)
 
