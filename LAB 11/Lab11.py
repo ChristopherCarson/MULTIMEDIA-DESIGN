@@ -83,15 +83,21 @@ d1 = "You are coming home from work and hear something rusting inside."
 d2 = """You sneak over to the fence that separates your house from the neighbors to the East of you. You've never trusted that strange family. You suspect they are all 
 part of a traveling circus. That would explain their bearded mother and the siamese twin sisters. Who knows what else might be living with them. You inspect the fence 
 for signs that anyone has climbed over or dug under. You find what appear to be the tracks of a flea, but can't be certain."""
-d3 = "Nothing yet"
+d3 = """You enter the patio area and notice a nice picnic table.  On the northern wall you can see a nice barbecue.  You notice that the charcoal is slightly warm.  
+When did I use my barbecue last? You notice windows on the east wall that allow you to see into the dining area.  Below the windows you notice a cooler that is empty.  
+What happened to my beer?  To the east is the door back to the entrance of the house."""
 d4 = """You enter the front of the house. The lights are off and for now, it is almost completely quiet. The faint sounds of a nearby clock's internal mechanisms are 
 the only noise. To the west, the door to the patio is slightly ajar and a mild breeze is coming through. To the north lies the dining area."""
 d5 = """Upon the entering the dining room, a sour, stale stench hits your face. What is that? Has some foul smelling creature been in here? Or do I just need to take 
 out the gargbage? You look around the room and notice what appear to be smudgy tracks leading outside throug the North door of the dining area."""
-d6 = "Nothing yet"
+d6 = """You enter the gym.  You are immediately hit with the smell of musty towels.  From the west wall you hear the faint humming sound of a treadmill.  
+Could someone have left it on?  Or did I forget to turn it off?  Near the dumbbell rack to the north is a door leading outside.  To the east is a door with a window that leads outside.  
+You can see the pool house and the door leading to the dining area through it."""
 d7 = "Nothing yet"
 d8 = "Nothing yet"
-d9 = "Nothing yet"
+d9 = """Upon entering the poolhouse, you notice the air is muggy and reeks of chlorine.  In the center of the room is a large rectangular pool.  
+There is a stack of towels next to the northern door which leads outside.  You notice there are inner tubes stacked next to the western door which leads to an area between the gym and the shed.  
+You also noticed wet footprints leading to the southern door which leads to the area between the poolhouse and the dining area.  Has someone been swimming in my pool?"""
 d10 = """The door creaks open as you enter a small shed. From the light coming through the door, you can barely make out what looks like a sea of tools filling up the room. 
 You notice an old chainsaw sitting on the table in the back. It is clear from the amount of dust on everything that no one has been in here for quite some time."""
 d11 = """You take a moment in the fresh breeze to clear your head. Surely you must be imaging all of this. You remember being haunted by something in the dark at camp as a 
@@ -122,7 +128,7 @@ r4.connectRoom(r5.index,"n")
 r7.connectRoom(r5.index,"s")
 r7.connectRoom(r6.index,"w")
 r7.connectRoom(r9.index,"n")
-r7.connectRoom(r2.index,"e")
+#r7.connectRoom(r2.index,"e") #Commented out because it won't let you return to the start
 r8.connectRoom(r6.index,"s")
 r8.connectRoom(r9.index,"e")
 r8.connectRoom(r10.index,"n")
