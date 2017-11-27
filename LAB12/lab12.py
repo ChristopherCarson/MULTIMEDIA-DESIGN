@@ -141,7 +141,7 @@ def movePlayer(Room, direction):
 
 def printIntro():
   printNow("""Welcome to The Code Blooded House of Horror!
-While in each room, you will be told which direction you can move. You can move in that direction by typing N for North, E for East, W for West and S for South.
+While in each room, you will be told which direction you can move. You can move in that direction by typing either North, East, South or West.
 Type help to return to these instruction anytime. Type exit to quit the game.\n""")
   time.sleep(1)
 
