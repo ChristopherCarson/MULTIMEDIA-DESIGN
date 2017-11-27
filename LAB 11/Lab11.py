@@ -163,7 +163,7 @@ printIntro()
 while end == false:
   printNow(player.location.outString())
   command = requestString("What direction would you like to move?\nN = North\nE = East\nW = West\nS = South\n"+
-  "'use' = use item in room\n'help' = instructions\n'exit' = quite game")
+  "'use' = use item in room\n'help' = instructions\n'exit' = quit game")
   if command.upper() == "EXIT":
     end = true
   elif command.upper() == "HELP":
