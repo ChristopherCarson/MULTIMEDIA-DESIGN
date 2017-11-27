@@ -171,10 +171,7 @@ if lose:
   "He pins you down and calls the police. You are arrested and sent to jail.\nYOU LOSE!")
 elif win == false and lose == false:
   printNow("No one likes a quitter.")
-<<<<<<< HEAD
-  
-  
-  
+
 
 #Function for generating the string that tells the player which directions they can head in.
 def genConString(Room):
@@ -236,5 +233,4 @@ def useObject(Room):
     Room[1] = alt6
     Room[3] = 4
     printNow("You feel a chill as you try to insert the key into the hole.")
-=======
->>>>>>> 633dc6162702dc82d7a0a428f42064222d462886
+
