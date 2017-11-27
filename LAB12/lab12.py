@@ -1,7 +1,7 @@
 #Lab 12
 #Team Code Blooded
 import time
-from array import array
+import array
 
 end = false #Variable to flag whether the player wishes to end the game and exit.
 lose = false #Variable for the lose condition
