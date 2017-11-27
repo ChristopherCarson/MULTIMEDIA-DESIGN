@@ -69,7 +69,7 @@ while end == false:
   printNow(RoomsArray[PlayerArray[0]][1]) #RoomsArray[PlayerArray[0]][1] is the description of the room
   printNow(genConString(RoomsArray[PlayerArray[0]])) #RoomsArray[PlayerArray[0]] will give the room array that the player is currenlty in
   command = requestString("What direction would you like to move?\nType: North, East, South or West\n"+
-  "'use' = use item in room\n'take' = take an item from the room\n'help' = instructions\n'exit' = quit game")
+  "'use' = use item in room\n'help' = instructions\n'exit' = quit game")
   if command.upper() == "EXIT":
     end = true
   elif command.upper() == "HELP":
