@@ -13,7 +13,7 @@ class Room:
       self.title = title
       self.description = description
       self.connections = {'N':'', 'E':'', 'S':'', 'W':'', 'U':'', 'D':''} #defines moveable directions
-      self.inventory = {'keys':''} #Defines interactable objects inside the room.
+      self.inventory = inventory #Defines interactable objects inside the room.
     
     #Generates the string that displays information about where the player can go from the room.
     def __genConString(self):
@@ -66,7 +66,7 @@ class Player:
     
     def __init__(self, location):
       self.location = location #defines starting room. Location parameter requires room object.
-      self.inventory = {} #defines the player's inventory.
+      self.inventory = {'keys':''} #defines the player's inventory.
 
     #Moves the player object to another room if the room has a connected room in the provided direction.   
     def move(self, direction):
@@ -79,7 +79,7 @@ class Player:
         return false
 
 #Descriptions for each room stored in a multi-line triple quote string.
-d1 = "You are coming home from work and hear something rustling inside."
+d1 = "You are coming home from work and hear something rustling inside. Look into your pocket for the keys to get in."
 d2 = """You sneak over to the fence that separates your house from the neighbors to the East of you. You've never trusted that strange family. You suspect they are all 
 part of a traveling circus. That would explain their bearded mother and the siamese twin sisters. Who knows what else might be living with them. You inspect the fence 
 for signs that anyone has climbed over or dug under. You find what appear to be the tracks of a flea, but can't be certain."""
@@ -163,7 +163,7 @@ printIntro()
 while end == false:
   printNow(player.location.outString())
   command = requestString("What direction would you like to move?\nN = North\nE = East\nW = West\nS = South\n"+
-  "'use' = use item in room\n'help' = instructions\n'exit' = quit game")
+  "'use' = use item in room\n'inv' = pulls up inventory\n'help' = instructions\n'exit' = quit game")
   if command.upper() == "EXIT":
     end = true
   elif command.upper() == "HELP":
@@ -171,7 +171,7 @@ while end == false:
   elif command.upper() == "USE":
     useObject(player.location)
   elif command.upper() == "INV":
-    useObject(player.location)  
+    useObject(player.location) 
   elif command.upper() in correctInput:
     player.move(command)
   else:

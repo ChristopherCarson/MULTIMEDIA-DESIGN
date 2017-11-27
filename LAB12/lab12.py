@@ -79,7 +79,7 @@ class Player:
         return false
 
 #Descriptions for each room stored in a multi-line triple quote string.
-d1 = "You are coming home from work and hear something rusting inside."
+d1 = "You are coming home from work and hear something rustling inside. The door is locked, use your key to open the door."
 d2 = """You sneak over to the fence that separates your house from the neighbors to the East of you. You've never trusted that strange family. You suspect they are all 
 part of a traveling circus. That would explain their bearded mother and the siamese twin sisters. Who knows what else might be living with them. You inspect the fence 
 for signs that anyone has climbed over or dug under. You find what appear to be the tracks of a flea, but can't be certain."""
@@ -89,7 +89,7 @@ What happened to my beer?  To the east is the door back to the entrance of the h
 d4 = """You enter the front of the house. The lights are off and for now, it is almost completely quiet. The faint sounds of a nearby clock's internal mechanisms are 
 the only noise. To the west, the door to the patio is slightly ajar and a mild breeze is coming through. To the north lies the dining area."""
 d5 = """Upon the entering the dining room, a sour, stale stench hits your face. What is that? Has some foul smelling creature been in here? Or do I just need to take 
-out the gargbage? You look around the room and notice what appear to be smudgy tracks leading outside throug the North door of the dining area. There is a bloody knife on the table. You might be able to use it."""
+out the garbage? You look around the room and notice what appear to be smudgy tracks leading outside throug the North door of the dining area. There is a bloody knife on the table. You might be able to use it."""
 d6 = """You enter the gym.  You are immediately hit with the smell of musty towels.  From the west wall you hear the faint humming sound of a treadmill.  
 Could someone have left it on?  Or did I forget to turn it off?  Near the dumbbell rack to the north is a door leading outside.  To the east is a door with a window that leads outside.  
 You can see the pool house and the door leading to the dining area through it."""
@@ -100,7 +100,8 @@ d8 = """You step outside and see the shed has been left alone to the North. The 
 There doesn't seem to be any obvious sign that someone walked through this area."""
 d9 = """Upon entering the poolhouse, you notice the air is muggy and reeks of chlorine.  In the center of the room is a large rectangular pool.  
 There is a stack of towels next to the northern door which leads outside.  You notice there are inner tubes stacked next to the western door which leads to an area between the gym and the shed.  
-You also noticed wet footprints leading to the southern door which leads to the area between the poolhouse and the dining area.  Has someone been swimming in my pool?"""
+You also noticed wet footprints leading to the southern door which leads to the area between the poolhouse and the dining area.  Has someone been swimming in my pool?There seems to be some muffled 
+noises coming from the pool house floor. Is that my imagination?"""
 d10 = """The door creaks open as you enter a small shed. From the light coming through the door, you can barely make out what looks like a sea of tools filling up the room. 
 You notice an old chainsaw sitting on the table in the back. It is clear from the amount of dust on everything that no one has been in here for quite some time."""
 d11 = """You take a moment in the fresh breeze to clear your head. Surely you must be imaging all of this. You remember being haunted by something in the dark at camp as a 
@@ -110,11 +111,12 @@ In the distance over the fence, you can almost make out what appears to be a bet
 
 #Alternate Room descriptions
 alt5 = """Upon the entering the dining room, a sour, stale stench hits your face. What is that? Has some foul smelling creature been in here? Or do I just need to take 
-out the gargbage? You look around the room and notice what appear to be smudgy tracks leading outside throug the North door of the dining area. 
+out the garbage? You look around the room and notice what appear to be smudgy tracks leading outside throug the North door of the dining area. 
 There was a knife on the table, but now you have it in your hand.  You should probably avoid going back to the front of the house."""
+alt6 = """You are now able to enter your house"""
 #Game begins here.
 #Initiate the 12 room object instances 
-r1 = Room("Front Porch", d1)
+r1 = Room("Front Porch", d1, "keys")
 r2 = Room("East Fence", d2)
 r3 = Room("Covered Patio", d3)
 r4 = Room("Inside House", d4)
@@ -157,17 +159,21 @@ def takeObject(room, player):
     printNow("You take the bloody knife from the table to use later just in case.")
   elif room.inventory == "":
     printNow("There is nothing you can take in this room")
-
+#uses an item in a room
 def useObject(room):
   if room.inventory == "":
     printNow("There is nothing to use in this room.")
   elif room.inventory == "chainsaw":
     printNow("After many attempts, you finally get the chainsaw running! It runs out of gas 5 seconds later.")
+  elif room.inventory == "keys":
+    room.description = alt6
+    printNow("You feel a chill as you try to insert the key into the hole.")  
   
 #Initate the player object.
 player = Player(r1)
 end = false #Variable to flag whether the player wishes to end the game and exit.
 lose = false #Variable for the lose condition
+win = false #Variable for the win condition
 correctInput = "NSEW"
 
 printIntro()
@@ -190,12 +196,18 @@ while end == false and lose == false:
     player.move(command)
   else:
     printNow("I'm sorry, that's not a correct command... Please try again")
+  if "knife" in player.inventory and player.location == r9:#the player wins after finding a bum in the hidden room under the pool
+    win = true 
+    break;
   if "knife" in player.inventory and player.location == r1:#The player loses if they take the knife and go to the front porch
     lose = true
     break; 
   
    
 #end while loop check for conditions
+if win:
+  printNow("You find out there's a hidden room under the area next to the towels. After going down a small flight of stairs you find a " +
+  "a mostly naked man saying he lived there before. You threaten him with the knife and he claims squatter's rights. Little did he know you are a lawyer.\n You Win!")
 if lose:
   printNow("As you return to the front porch you are tackled by a passerby who sees the knife in your hands and mistakes you for a serial killer."+ 
   "He pins you down and calls the police. You are arrested and sent to jail.\n YOU LOSE.")
