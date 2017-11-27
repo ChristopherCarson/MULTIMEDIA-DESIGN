@@ -1,4 +1,4 @@
-#Lab 11
+#Lab 12 CST 205 Christopher Carson, John Coffelt, Michael Rose, Raul Ramirez
 
 import time
 
@@ -66,7 +66,7 @@ class Player:
     
     def __init__(self, location):
       self.location = location #defines starting room. Location parameter requires room object.
-      self.inventory = {} #defines the player's inventory.
+      self.inventory = {'keys':''} #defines the player's inventory.
 
     #Moves the player object to another room if the room has a connected room in the provided direction.   
     def move(self, direction):
@@ -79,7 +79,7 @@ class Player:
         return false
 
 #Descriptions for each room stored in a multi-line triple quote string.
-d1 = "You are coming home from work and hear something rusting inside."
+d1 = "You are coming home from work and hear something rusting inside. Check your inventory for the keys"
 d2 = """You sneak over to the fence that separates your house from the neighbors to the East of you. You've never trusted that strange family. You suspect they are all 
 part of a traveling circus. That would explain their bearded mother and the siamese twin sisters. Who knows what else might be living with them. You inspect the fence 
 for signs that anyone has climbed over or dug under. You find what appear to be the tracks of a flea, but can't be certain."""
@@ -110,7 +110,7 @@ In the distance over the fence, you can almost make out what appears to be a bet
 
 #Game begins here.
 #Initiate the 12 room object instances 
-r1 = Room("Front Porch", d1)
+r1 = Room("Front Porch", d1, "keys")
 r2 = Room("East Fence", d2)
 r3 = Room("Covered Patio", d3)
 r4 = Room("Inside House", d4)
@@ -149,6 +149,8 @@ def useObject(room):
     printNow("There is nothing to use in this room.")
   elif room.inventory == "chainsaw":
     printNow("After many attempts, you finally get the chainsaw running! It runs out of gas 5 seconds later.")
+  elif room.inventory == "keys":
+    printNow("You successfully found the keyhole")
   
 #Initate the player object.
 player = Player(r1)
@@ -161,13 +163,15 @@ printIntro()
 while end == false:
   printNow(player.location.outString())
   command = requestString("What direction would you like to move?\nN = North\nE = East\nW = West\nS = South\n"+
-  "'use' = use item in room\n'help' = instructions\n'exit' = quite game")
+  "'use' = use item in room\n'inv' = brings up inventory\n'help' = instructions\n'exit' = quit game")
   if command.upper() == "EXIT":
     end = true
   elif command.upper() == "HELP":
     printIntro()
   elif command.upper() == "USE":
     useObject(player.location)
+  elif command.upper() == "INV":
+    player.inventory()
   elif command.upper() in correctInput:
     player.move(command)
   else:
