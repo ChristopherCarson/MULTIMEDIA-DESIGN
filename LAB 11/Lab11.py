@@ -47,7 +47,7 @@ alt6 = """You are now able to enter your house."""
 
 #Skipping array value 0 so it's easier to read the room number (1-12), room information is loaded as follows:
 #[title, description, inventory, room to north, north to east, room to south, room to west]
-RoomsArray[1] = ["Front Porth", d1, "keys", 0,0,0,0]
+RoomsArray[1] = ["Front Porch", d1, "keys", 0,0,0,0]
 RoomsArray[2] = ["East Fence", d2, "", 0,0,0,7]
 RoomsArray[3] = ["Covered Patio", d3, "", 0,4,0,0]
 RoomsArray[4] = ["Inside House", d4, "", 5,0,1,3]
