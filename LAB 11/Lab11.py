@@ -47,7 +47,7 @@ alt6 = """You are now able to enter your house."""
 
 #Skipping array value 0 so it's easier to read the room number (1-12), room information is loaded as follows:
 #[title, description, inventory, room to north, north to east, room to south, room to west]
-RoomsArray[1] = ["Front Porth", d1, "keys", 0,0,0,0]
+RoomsArray[1] = ["Front Porch", d1, "keys", 0,0,0,0]
 RoomsArray[2] = ["East Fence", d2, "", 0,0,0,7]
 RoomsArray[3] = ["Covered Patio", d3, "", 0,4,0,0]
 RoomsArray[4] = ["Inside House", d4, "", 5,0,1,3]
@@ -60,7 +60,12 @@ RoomsArray[10] = ["Shed", d10, "chainsaw", 0,0,8,0]
 RoomsArray[11] = ["Outside North", d11, "", 12,0,0,9]
 RoomsArray[12] = ["North Fence", d12, "", 0,0,11,0]
 
-printIntro()#Print intro once before game begins
+#intro
+printNow("""Welcome to The Code Blooded House of Horror!
+While in each room, you will be told which direction you can move. You can move in that direction by typing N for North, E for East, W for West and S for South.
+Type help to return to these instruction anytime. Type exit to quit the game.\n""")
+time.sleep(1)
+#printIntro()#Print intro once before game begins
 
 #Main while loop.
 while end == false:
