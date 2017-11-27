@@ -1,82 +1,19 @@
 #Lab 12
 #Team Code Blooded
 import time
+from array import array
 
-#Class for creating an object that represents a room in a text-based adventure game.
-class Room:
-    __instances = []
-    
-    #Initializes room object with optional title and description.
-    def __init__(self, title = "", description = "", inventory = ""):
-      Room.__instances.append(self)
-      self.index = Room.__instances.index(self)
-      self.title = title
-      self.description = description
-      self.connections = {'N':'', 'E':'', 'S':'', 'W':'', 'U':'', 'D':''} #defines moveable directions
-      self.inventory = inventory #Defines interactable objects inside the room.
-    
-    #Generates the string that displays information about where the player can go from the room.
-    def __genConString(self):
-      connection_string = "You can go "
-      if self.connections['N'] != "": connection_string += "North, "
-      if self.connections['S'] != "": connection_string += "South, " 
-      if self.connections['E'] != "": connection_string += "East, " 
-      if self.connections['W'] != "": connection_string += "West, " 
-      if self.connections['U'] != "": connection_string += "Up, " 
-      if self.connections['D'] != "": connection_string += "Down, "
-      connection_string = connection_string[:-2]
-      connection_string += ".\n"
-      last_comma = connection_string.rfind(",")  
-      if last_comma != -1: connection_string = connection_string[:last_comma] + ", and" + connection_string[last_comma + 1:]
-      if connection_string.count(",") == 1:
-        last_comma = connection_string.rfind(",")
-        connection_string = connection_string[:last_comma] + "" + connection_string[last_comma + 1:]    
-      return connection_string
-    
-    #Connects a room object to another room object using the built-in directions N,S,E,W,U,D.            
-    def connectRoom(self, index, direction, both_ways = true):
-      assert index + 1 <= len(Room.__instances) , "Not a valid connection! Connecting room does not exist!"
-      
-      direction = direction.upper()
-      assert direction in self.connections.keys(), "Not a valid direction!"
-      self.connections[direction] = index
-      
-      if both_ways == true:
-        if direction == "N": Room.__instances[index].connections['S'] = self.index
-        if direction == "S": Room.__instances[index].connections['N'] = self.index  
-        if direction == "E": Room.__instances[index].connections['W'] = self.index  
-        if direction == "W": Room.__instances[index].connections['E'] = self.index
-        if direction == "D": Room.__instances[index].connections['U'] = self.index  
-        if direction == "U": Room.__instances[index].connections['D'] = self.index
-    
-    #Returns a string containing the room title, description, and possible directions.        
-    def outString(self):
-      string = self.title + "\n\n"   
-      string += self.description + "\n\n"
-      string += self.__genConString()
-      
-      return string
-      
-    def getRoom(self, index):
-      assert index + 1 <= len(Room.__instances) , "Not a valid room index!"
-      return Room.__instances[index]     
-
-#Class for the player. Defines player objects and their actions in a text-based adventure game.
-class Player:
-    
-    def __init__(self, location):
-      self.location = location #defines starting room. Location parameter requires room object.
-      self.inventory = [] #defines the player's inventory.
-
-    #Moves the player object to another room if the room has a connected room in the provided direction.   
-    def move(self, direction):
-      room = self.location
-      direction = direction.upper()
-      if direction in room.connections.keys() and room.connections[direction] != "":
-        self.location = room.getRoom(room.connections[direction])
-        return true
-      else:
-        return false
+end = false #Variable to flag whether the player wishes to end the game and exit.
+lose = false #Variable for the lose condition
+win = false #Variable for the win condition
+correctInput = ["NORTH", "EAST", "SOUTH", "WEST"]
+#Initiate a two demonsiaonl array with  "list comprehension" for the 12 rooms.
+w, h = 6, 13;
+RoomsArray = [[0 for x in range(w)] for y in range(h)]
+#Initiate an array for the player containing the room they are in and what they have in their inventory.
+#PlayerArray[0] = Room player is in
+#PlayerArray[1] = Player Inventory
+PlayerArray = [1, ""]
 
 #Descriptions for each room stored in a multi-line triple quote string.
 d1 = "You are coming home from work and hear something rustling inside. The door is locked, use your key to open the door."
@@ -108,41 +45,99 @@ d11 = """You take a moment in the fresh breeze to clear your head. Surely you mu
 little kid. No one else would believe you, but you know what you saw. Those terrible eyes and such sharp fangs. Could it be back? No, of course not. It couldn't possibly be... could it?!"""
 d12 = """You approach a chain-link fence. The fence is in disrepair and no longer stands straight, but is still managing to do its job. 
 In the distance over the fence, you can almost make out what appears to be a better game. Unfortunately, you have no way to get to it."""
-
 #Alternate Room descriptions
 alt5 = """Upon the entering the dining room, a sour, stale stench hits your face. What is that? Has some foul smelling creature been in here? Or do I just need to take 
 out the garbage? You look around the room and notice what appear to be smudgy tracks leading outside throug the North door of the dining area. 
 There was a knife on the table, but now you have it in your hand.  You should probably avoid going back to the front of the house."""
-alt6 = """You are now able to enter your house"""
-#Game begins here.
-#Initiate the 12 room object instances 
-r1 = Room("Front Porch", d1, "keys")
-r2 = Room("East Fence", d2)
-r3 = Room("Covered Patio", d3)
-r4 = Room("Inside House", d4)
-r5 = Room("Dining Area", d5, "knife")
-r6 = Room("Gym", d6)
-r7 = Room("Outside South", d7)
-r8 = Room("Outside West", d8)
-r9 = Room("Pool House", d9)
-r10 = Room("Shed", d10, "chainsaw")
-r11 = Room("Outside North", d11)
-r12 = Room("North Fence", d12)
+alt6 = """You are now able to enter your house."""
 
-#Initiate the connections the rooms have with one another.
-r1.connectRoom(r2.index,"e")
-r1.connectRoom(r4.index,"n")
-r4.connectRoom(r3.index,"w")
-r4.connectRoom(r5.index,"n")
-r7.connectRoom(r5.index,"s")
-r7.connectRoom(r6.index,"w")
-r7.connectRoom(r9.index,"n")
-#r7.connectRoom(r2.index,"e") #Commented out because it won't let you return to the start
-r8.connectRoom(r6.index,"s")
-r8.connectRoom(r9.index,"e")
-r8.connectRoom(r10.index,"n")
-r11.connectRoom(r9.index,"s")
-r11.connectRoom(r12.index,"n")
+#Skipping array value 0 so it's easier to read the room number (1-12), room information is loaded as follows:
+#[title, description, inventory, room to north, north to east, room to south, room to west]
+RoomsArray[1] = ["Front Porth", d1, "keys", 0,0,0,0]
+RoomsArray[2] = ["East Fence", d2, "", 0,0,0,7]
+RoomsArray[3] = ["Covered Patio", d3, "", 0,4,0,0]
+RoomsArray[4] = ["Inside House", d4, "", 5,0,1,3]
+RoomsArray[5] = ["Dining Area", d5, "knife", 7,0,4,0]
+RoomsArray[6] = ["Gym", d6, "", 8,7,0,0]
+RoomsArray[7] = ["Outside South", d7, "", 9,2,5,6]
+RoomsArray[8] = ["Outside West", d8, "", 10,9,6,0]
+RoomsArray[9] = ["Pool House", d9, "", 11,0,7,8]
+RoomsArray[10] = ["Shed", d10, "chainsaw", 0,0,8,0]
+RoomsArray[11] = ["Outside North", d11, "", 12,0,0,9]
+RoomsArray[12] = ["North Fence", d12, "", 0,0,11,0]
+
+printIntro()#Print intro once before game begins
+
+#Main while loop.
+while end == false:
+  #printNow(player.location.outString())
+  printNow(RoomsArray[PlayerArray[0]][0]) #RoomsArray[PlayerArray[0]][0] is the title of the room
+  printNow(RoomsArray[PlayerArray[0]][1]) #RoomsArray[PlayerArray[0]][1] is the description of the room
+  printNow(genConString(RoomsArray[PlayerArray[0]])) #RoomsArray[PlayerArray[0]] will give the room array that the player is currenlty in
+  command = requestString("What direction would you like to move?\nType: North, East, South or West\n"+
+  "'use' = use item in room\n'take' = take an item from the room\n'help' = instructions\n'exit' = quit game")
+  if command.upper() == "EXIT":
+    end = true
+  elif command.upper() == "HELP":
+    printIntro()
+  elif command.upper() == "USE":
+    useObject(RoomsArray[PlayerArray[0]])
+  elif command.upper() == "TAKE":
+    takeObject(RoomsArray[PlayerArray[0]])
+  elif command.upper() in correctInput:
+    movePlayer(RoomsArray[PlayerArray[0]], command)
+  else:
+    printNow("I'm sorry, that's not a correct command... Please try again")
+  if PlayerArray[1] == "knife" and PlayerArray[0] == 9:#the player wins after finding a bum in the hidden room under the pool
+    win = true 
+    break;
+  if PlayerArray[1] == "knife" and PlayerArray[0] == 1:#The player loses if they take the knife and go to the front porch
+    lose = true
+    break; 
+  
+#end while loop check for conditions
+if win:
+  printNow("You find out there's a hidden room under the area next to the towels. After going down a small flight of stairs you find a " +
+  "a mostly naked man saying he lived there before. You threaten him with the knife and he claims squatter's rights. Little did he know you are a lawyer.\n You Win!")
+if lose:
+  printNow("As you return to the front porch you are tackled by a passerby who sees the knife in your hands and mistakes you for a serial killer. "+ 
+  "He pins you down and calls the police. You are arrested and sent to jail.\nYOU LOSE!")
+elif win == false and lose == false:
+  printNow("No one likes a quitter.")
+  
+  
+  
+
+#Function for generating the string that tells the player which directions they can head in.
+def genConString(Room):
+  connection_string = "You can go "
+  if Room[3] != 0: connection_string += "North, "
+  if Room[4] != 0: connection_string += "East, " 
+  if Room[5] != 0: connection_string += "South, " 
+  if Room[6] != 0: connection_string += "West, " 
+  connection_string = connection_string[:-2]
+  connection_string += ".\n"
+  last_comma = connection_string.rfind(",")
+  if last_comma != -1: connection_string = connection_string[:last_comma] + ", and" + connection_string[last_comma + 1:]
+  if connection_string.count(",") == 1:
+    last_comma = connection_string.rfind(",")
+    connection_string = connection_string[:last_comma] + "" + connection_string[last_comma + 1:]
+  elif Room[3] == 0 and Room[4] == 0 and Room[5] == 0 and Room[6] == 0:
+    connection_string = "You can go nowhere yet... the front door is locked."
+  return connection_string
+ 
+#Function that moves the player into the next room.
+def movePlayer(Room, direction):
+  if direction.upper() == "NORTH" and Room[3] != 0:
+    PlayerArray[0] = Room[3]
+  elif direction.upper() == "EAST" and Room[4] != 0:
+    PlayerArray[0] = Room[4]
+  elif direction.upper() == "SOUTH" and Room[5] != 0:
+    PlayerArray[0] = Room[5]
+  elif direction.upper() == "WEST" and Room[6] != 0:
+    PlayerArray[0] = Room[6]
+  else:
+    printNow("You can't go that way")
 
 def printIntro():
   printNow("""Welcome to The Code Blooded House of Horror!
@@ -151,67 +146,25 @@ Type help to return to these instruction anytime. Type exit to quit the game.\n"
   time.sleep(1)
 
 #takes an object from a room if applicable and adds it to player inventory
-def takeObject(room, player):
-  if room.inventory =="knife":
-    player.inventory.append("knife")
-    room.inventory = ""
-    room.description = alt5
+def takeObject(Room):
+  if Room[2] == "knife":
+    PlayerArray[1] = "knife"
+    Room[2] = ""
+    Room[1] = alt5
     printNow("You take the bloody knife from the table to use later just in case.")
-  elif room.inventory == "":
+  elif Room[2] == "":
     printNow("There is nothing you can take in this room")
+  elif Room[2] == "chainsaw":
+    printNow("You don't want to lug around a broken chainsaw... Better test it first.")
+    
 #uses an item in a room
-def useObject(room):
-  if room.inventory == "":
+def useObject(Room):
+  if Room[2] == "":
     printNow("There is nothing to use in this room.")
-  elif room.inventory == "chainsaw":
+  elif Room[2] == "chainsaw":
     printNow("After many attempts, you finally get the chainsaw running! It runs out of gas 5 seconds later.")
-  elif room.inventory == "keys":
-    room.description = alt6
-    printNow("You feel a chill as you try to insert the key into the hole.")  
-  
-#Initate the player object.
-player = Player(r1)
-end = false #Variable to flag whether the player wishes to end the game and exit.
-lose = false #Variable for the lose condition
-win = false #Variable for the win condition
-correctInput = "NSEW"
-
-printIntro()
-
-player.inventory
-#Main while loop.
-while end == false and lose == false:
-  printNow(player.location.outString())
-  command = requestString("What direction would you like to move?\nN = North\nE = East\nW = West\nS = South\n"+
-  "'use' = use item in room\n'take' = take an item from the room\n'help' = instructions\n'exit' = quit game")
-  if command.upper() == "EXIT":
-    end = true
-  elif command.upper() == "HELP":
-    printIntro()
-  elif command.upper() == "USE":
-    useObject(player.location)
-  elif command.upper() == "TAKE":
-    takeObject(player.location, player)
-  elif command.upper() in correctInput:
-    player.move(command)
-  else:
-    printNow("I'm sorry, that's not a correct command... Please try again")
-  if "knife" in player.inventory and player.location == r9:#the player wins after finding a bum in the hidden room under the pool
-    win = true 
-    break;
-  if "knife" in player.inventory and player.location == r1:#The player loses if they take the knife and go to the front porch
-    lose = true
-    break; 
-  
-   
-#end while loop check for conditions
-if win:
-  printNow("You find out there's a hidden room under the area next to the towels. After going down a small flight of stairs you find a " +
-  "a mostly naked man saying he lived there before. You threaten him with the knife and he claims squatter's rights. Little did he know you are a lawyer.\n You Win!")
-if lose:
-  printNow("As you return to the front porch you are tackled by a passerby who sees the knife in your hands and mistakes you for a serial killer."+ 
-  "He pins you down and calls the police. You are arrested and sent to jail.\n YOU LOSE.")
-else:
-  printNow("No one likes a quitter.")
-
-
+  elif Room[2] == "keys":
+    Room[2] = ""
+    Room[1] = alt6
+    Room[3] = 4
+    printNow("You feel a chill as you try to insert the key into the hole.")
