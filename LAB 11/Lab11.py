@@ -60,7 +60,12 @@ RoomsArray[10] = ["Shed", d10, "chainsaw", 0,0,8,0]
 RoomsArray[11] = ["Outside North", d11, "", 12,0,0,9]
 RoomsArray[12] = ["North Fence", d12, "", 0,0,11,0]
 
-printIntro()#Print intro once before game begins
+#intro
+printNow("""Welcome to The Code Blooded House of Horror!
+While in each room, you will be told which direction you can move. You can move in that direction by typing N for North, E for East, W for West and S for South.
+Type help to return to these instruction anytime. Type exit to quit the game.\n""")
+time.sleep(1)
+#printIntro()#Print intro once before game begins
 
 #Main while loop.
 while end == false:
