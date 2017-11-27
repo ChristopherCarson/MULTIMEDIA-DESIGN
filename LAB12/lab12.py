@@ -3,6 +3,67 @@
 import time
 import array
 
+#Function for generating the string that tells the player which directions they can head in.
+def genConString(Room):
+  connection_string = "You can go "
+  if Room[3] != 0: connection_string += "North, "
+  if Room[4] != 0: connection_string += "East, " 
+  if Room[5] != 0: connection_string += "South, " 
+  if Room[6] != 0: connection_string += "West, " 
+  connection_string = connection_string[:-2]
+  connection_string += ".\n"
+  last_comma = connection_string.rfind(",")
+  if last_comma != -1: connection_string = connection_string[:last_comma] + ", and" + connection_string[last_comma + 1:]
+  if connection_string.count(",") == 1:
+    last_comma = connection_string.rfind(",")
+    connection_string = connection_string[:last_comma] + "" + connection_string[last_comma + 1:]
+  elif Room[3] == 0 and Room[4] == 0 and Room[5] == 0 and Room[6] == 0:
+    connection_string = "You can go nowhere yet... the front door is locked."
+  return connection_string
+ 
+#Function that moves the player into the next room.
+def movePlayer(Room, direction):
+  if direction.upper() == "NORTH" and Room[3] != 0:
+    PlayerArray[0] = Room[3]
+  elif direction.upper() == "EAST" and Room[4] != 0:
+    PlayerArray[0] = Room[4]
+  elif direction.upper() == "SOUTH" and Room[5] != 0:
+    PlayerArray[0] = Room[5]
+  elif direction.upper() == "WEST" and Room[6] != 0:
+    PlayerArray[0] = Room[6]
+  else:
+    printNow("You can't go that way")
+
+def printIntro():
+  printNow("""Welcome to The Code Blooded House of Horror!
+While in each room, you will be told which direction you can move. You can move in that direction by typing N for North, E for East, W for West and S for South.
+Type help to return to these instruction anytime. Type exit to quit the game.\n""")
+  time.sleep(1)
+
+#takes an object from a room if applicable and adds it to player inventory
+def takeObject(Room):
+  if Room[2] == "knife":
+    PlayerArray[1] = "knife"
+    Room[2] = ""
+    Room[1] = alt5
+    printNow("You take the bloody knife from the table to use later just in case.")
+  elif Room[2] == "":
+    printNow("There is nothing you can take in this room")
+  elif Room[2] == "chainsaw":
+    printNow("You don't want to lug around a broken chainsaw... Better test it first.")
+    
+#uses an item in a room
+def useObject(Room):
+  if Room[2] == "":
+    printNow("There is nothing to use in this room.")
+  elif Room[2] == "chainsaw":
+    printNow("After many attempts, you finally get the chainsaw running! It runs out of gas 5 seconds later.")
+  elif Room[2] == "keys":
+    Room[2] = ""
+    Room[1] = alt6
+    Room[3] = 4
+    printNow("You feel a chill as you try to insert the key into the hole.")
+
 end = false #Variable to flag whether the player wishes to end the game and exit.
 lose = false #Variable for the lose condition
 win = false #Variable for the win condition
@@ -53,7 +114,7 @@ alt6 = """You are now able to enter your house."""
 
 #Skipping array value 0 so it's easier to read the room number (1-12), room information is loaded as follows:
 #[title, description, inventory, room to north, north to east, room to south, room to west]
-RoomsArray[1] = ["Front Porth", d1, "keys", 0,0,0,0]
+RoomsArray[1] = ["Front Porch", d1, "keys", 0,0,0,0]
 RoomsArray[2] = ["East Fence", d2, "", 0,0,0,7]
 RoomsArray[3] = ["Covered Patio", d3, "", 0,4,0,0]
 RoomsArray[4] = ["Inside House", d4, "", 5,0,1,3]
@@ -63,10 +124,16 @@ RoomsArray[7] = ["Outside South", d7, "", 9,2,5,6]
 RoomsArray[8] = ["Outside West", d8, "", 10,9,6,0]
 RoomsArray[9] = ["Pool House", d9, "", 11,0,7,8]
 RoomsArray[10] = ["Shed", d10, "chainsaw", 0,0,8,0]
-RoomsArray[11] = ["Outside North", d11, "", 12,0,0,9]
+RoomsArray[11] = ["Outside North", d11, "", 12,0,9,0]
 RoomsArray[12] = ["North Fence", d12, "", 0,0,11,0]
 
-printIntro()#Print intro once before game begins
+#game starts here
+#print the intro
+printNow("""Welcome to The Code Blooded House of Horror!
+While in each room, you will be told which direction you can move. You can move in that direction by typing N for North, E for East, W for West and S for South.
+Type help to return to these instruction anytime. Type exit to quit the game.\n""")
+#wait one second
+time.sleep(1)
 
 #Main while loop.
 while end == false:
@@ -104,6 +171,7 @@ if lose:
   "He pins you down and calls the police. You are arrested and sent to jail.\nYOU LOSE!")
 elif win == false and lose == false:
   printNow("No one likes a quitter.")
+<<<<<<< HEAD
   
   
   
@@ -168,3 +236,5 @@ def useObject(Room):
     Room[1] = alt6
     Room[3] = 4
     printNow("You feel a chill as you try to insert the key into the hole.")
+=======
+>>>>>>> 633dc6162702dc82d7a0a428f42064222d462886
