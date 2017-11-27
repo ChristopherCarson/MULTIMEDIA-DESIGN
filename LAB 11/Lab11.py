@@ -1,4 +1,4 @@
-#Lab 11
+#Lab 11 Christopher Carson, John Coffelt, Michael Rose, Raul Ramirez
 
 import time
 
@@ -13,7 +13,7 @@ class Room:
       self.title = title
       self.description = description
       self.connections = {'N':'', 'E':'', 'S':'', 'W':'', 'U':'', 'D':''} #defines moveable directions
-      self.inventory = inventory #Defines interactable objects inside the room.
+      self.inventory = {'keys':''} #Defines interactable objects inside the room.
     
     #Generates the string that displays information about where the player can go from the room.
     def __genConString(self):
@@ -79,7 +79,7 @@ class Player:
         return false
 
 #Descriptions for each room stored in a multi-line triple quote string.
-d1 = "You are coming home from work and hear something rusting inside."
+d1 = "You are coming home from work and hear something rustling inside."
 d2 = """You sneak over to the fence that separates your house from the neighbors to the East of you. You've never trusted that strange family. You suspect they are all 
 part of a traveling circus. That would explain their bearded mother and the siamese twin sisters. Who knows what else might be living with them. You inspect the fence 
 for signs that anyone has climbed over or dug under. You find what appear to be the tracks of a flea, but can't be certain."""
@@ -89,23 +89,15 @@ What happened to my beer?  To the east is the door back to the entrance of the h
 d4 = """You enter the front of the house. The lights are off and for now, it is almost completely quiet. The faint sounds of a nearby clock's internal mechanisms are 
 the only noise. To the west, the door to the patio is slightly ajar and a mild breeze is coming through. To the north lies the dining area."""
 d5 = """Upon the entering the dining room, a sour, stale stench hits your face. What is that? Has some foul smelling creature been in here? Or do I just need to take 
-out the gargbage? You look around the room and notice what appear to be smudgy tracks leading outside throug the North door of the dining area."""
+out the garbage? You look around the room and notice what appear to be smudgy tracks leading outside through the North door of the dining area."""
 d6 = """You enter the gym.  You are immediately hit with the smell of musty towels.  From the west wall you hear the faint humming sound of a treadmill.  
 Could someone have left it on?  Or did I forget to turn it off?  Near the dumbbell rack to the north is a door leading outside.  To the east is a door with a window that leads outside.  
 You can see the pool house and the door leading to the dining area through it."""
-<<<<<<< HEAD
 d7 = """You step outside and notice the dim light of the neighbor's back portch illuminating the ground in front of you. There seems to be some muddy tracks leading into the Dining 
 Area South. As you reach to close the door, smudges of what looks like mud are up aggainst it. There are also muddy tracks into the gym to the East. The light of the pool house 
 is illuminating small puddles of water along the walkway leading into it to the North. Was someone already wet or just come out of the pool house?"""
 d8 = """You step outside and see the shed has been left alone to the North. The pool house to the East looks like someone was in there. The gym to the South has hardly been 
 used since it was made a couple of days ago. There doesn't seem to be any obvious sign that someone walked through this area."""
-=======
-d7 = """You step outside and notice the dim light of the neighbor's back portch illuminating the ground in front of you. There seems to be some muddy tracks leading into the Dining Area South. 
-As you reach to close the door, smudges of what looks like mud are up aggainst it. There are also muddy tracks into the gym to the East. The light of the pool house is illuminating small puddles of water along the walkway leading into it to the North. 
-Was someone already wet or just come out of the pool house? You can investigate the fence to the east for any clues regarding the wet floor."""
-d8 = """You step outside and see the shed has been left alone to the North. The pool house to the East looks like someone was in there. The gym to the South has hardly been used since it was made a couple of days ago. 
-There doesn't seem to be any obvious sign that someone walked through this area."""
->>>>>>> 0d510e1a934f7de594bc7b37634fe49e14f942df
 d9 = """Upon entering the poolhouse, you notice the air is muggy and reeks of chlorine.  In the center of the room is a large rectangular pool.  
 There is a stack of towels next to the northern door which leads outside.  You notice there are inner tubes stacked next to the western door which leads to an area between the gym and the shed.  
 You also noticed wet footprints leading to the southern door which leads to the area between the poolhouse and the dining area.  Has someone been swimming in my pool?"""
@@ -118,7 +110,7 @@ In the distance over the fence, you can almost make out what appears to be a bet
 
 #Game begins here.
 #Initiate the 12 room object instances 
-r1 = Room("Front Porch", d1)
+r1 = Room("Front Porch", d1, "keys")
 r2 = Room("East Fence", d2)
 r3 = Room("Covered Patio", d3)
 r4 = Room("Inside House", d4)
@@ -157,7 +149,9 @@ def useObject(room):
     printNow("There is nothing to use in this room.")
   elif room.inventory == "chainsaw":
     printNow("After many attempts, you finally get the chainsaw running! It runs out of gas 5 seconds later.")
-  
+  elif room.inventory == "keys":
+    printNow("You try to find the keyhole a few times, the handle needs to be wiggled a little to open.")
+    
 #Initate the player object.
 player = Player(r1)
 end = false #Variable to flag whether the player wishes to end the game and exit.
@@ -176,6 +170,8 @@ while end == false:
     printIntro()
   elif command.upper() == "USE":
     useObject(player.location)
+  elif command.upper() == "INV":
+    useObject(player.location)  
   elif command.upper() in correctInput:
     player.move(command)
   else:
