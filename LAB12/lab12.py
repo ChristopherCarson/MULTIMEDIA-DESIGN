@@ -14,7 +14,7 @@ RoomsArray = [[0 for x in range(w)] for y in range(h)]
 #Initiate a variable for the player containing the room they are in and what they have in their inventory.
 PlayerRoom = 1
 #player's inventory as a list.
-playerInventory = []
+playerInventory = ["keys"]
 
 #Descriptions for each room stored in a multi-line triple quote string.
 d1 = "You are coming home from work and hear something rustling inside. The door is locked, use your key to open the door."
@@ -178,12 +178,19 @@ def useObject(Room, inventory):
         printNow("You try to open the tool chest but it is locked.")
   elif Room[2] == "chainsaw":
     printNow("After many attempts, you finally get the chainsaw running! It runs out of gas 5 seconds later.")
-  elif Room[2] == "keys":
-    Room[2] = ""
+  elif "keys" in inventory and Room[2] == "keys":
+    inventory[0] = ""
     Room[1] = alt1
     Room[3] = 4
     printNow("You feel a chill as you try to insert the key into the hole.")
-
+    
+def listInventory():
+  global playerInventory
+  list = ""
+  for x in range (0,len(playerInventory)):
+    list = list + " " + playerInventory[x]
+  return list
+    
 #Function to print the Intro
 def printIntro():
   printNow("""Welcome to The Code Blooded House of Horror!
@@ -200,8 +207,10 @@ while end == false:
   printNow(RoomsArray[PlayerRoom][0]) #RoomsArray[PlayerArray[0]][0] is the title of the room
   printNow(RoomsArray[PlayerRoom][1]) #RoomsArray[PlayerArray[0]][1] is the description of the room
   printNow(genConString(RoomsArray[PlayerRoom])) #RoomsArray[PlayerArray[0]] will give the room array that the player is currenlty in
+  list = listInventory()
   command = requestString("What direction would you like to move?\nType: North, East, South or West\n"+
-  "'use' = use item in room\n'take' = take an item from the room\n'help' = instructions\n'exit' = quit game")
+  "'use' = use item in room\n'take' = take an item from the room\n'help' = instructions\n'exit' = quit game\n"+
+  "Inventory = "+list)
   if command.upper() == "EXIT":
     end = true
   elif command.upper() == "HELP":
