@@ -184,12 +184,15 @@ def useObject(Room, inventory):
     Room[3] = 4
     printNow("You feel a chill as you try to insert the key into the hole.")
 
-#game starts here
-#print the intro
-printNow("""Welcome to The Code Blooded House of Horror!
-While in each room, you will be told which direction you can move. You can move in that direction by typing N for North, E for East, W for West and S for South.
+#Function to print the Intro
+def printIntro():
+  printNow("""Welcome to The Code Blooded House of Horror!
+While in each room, you will be told which direction you can move. You can move in that direction by typing North, East, West or South.
 Type help to return to these instruction anytime. Type exit to quit the game.\n""")
+
+#game starts here
 #wait one second
+printIntro()
 time.sleep(1)
 
 #Main while loop.
