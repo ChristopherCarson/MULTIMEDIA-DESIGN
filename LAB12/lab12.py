@@ -37,7 +37,7 @@ d6 = """You enter the gym.  You are immediately hit with the smell of musty towe
 Upon further inspection, you notice a key on the treadmill. Near the dumbbell rack to the north is a door leading outside. To the east is a door with a window that leads outside. You can see the pool house and the door leading to the dining area through it."""
 
 d7 = """You step outside and notice the dim light of the neighbor's back portch illuminating the ground in front of you. There seems to be some muddy tracks leading into the Dining Area South. 
-As you reach to close the door, smudges of what looks like mud are up aggainst it. There are also muddy tracks into the gym to the East. The light of the pool house is illuminating small puddles of water along the walkway leading into it to the North. 
+As you reach to close the door, smudges of what looks like mud are up aggainst it. There are also muddy tracks into the gym to the West. The light of the pool house is illuminating small puddles of water along the walkway leading into it to the North. 
 Was someone already wet or just come out of the pool house? You can investigate the fence to the east for any clues regarding the wet floor."""
 
 d8 = """You step outside and see the shed has been left alone to the North. The pool house to the East looks like someone was in there. The gym to the South has hardly been used since it was made a couple of days ago. 
@@ -224,7 +224,7 @@ while end == false:
 #end while loop check for conditions
 if win:
   printNow("You open the hatch with your crowbar and it reveals a well lit passageway. After going down a small flight of stairs you find a " +
-  "a mostly naked man saying he lived there before. You threaten him with the knife and he claims squatter's rights. Little did he know you are a lawyer.\n You Win!")
+  "mostly naked man saying he lived there before. You threaten him with the knife and he claims squatter's rights. Little did he know you are a lawyer.\n You Win!")
 if lose:
   printNow("As you return to the front porch you are tackled by a passerby who sees the knife in your hands and mistakes you for a serial killer. "+ 
   "He pins you down and calls the police. You are arrested and sent to jail.\nYOU LOSE!")
