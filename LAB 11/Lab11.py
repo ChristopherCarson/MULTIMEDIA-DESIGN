@@ -2,6 +2,7 @@
 import time
 import array
 
+#global setup
 end = false #Variable to flag whether the player wishes to end the game and exit.
 lose = false #Variable for the lose condition
 win = false #Variable for the win condition
@@ -10,9 +11,9 @@ correctInput = ["NORTH", "EAST", "SOUTH", "WEST"]
 w, h = 6, 13;
 RoomsArray = [[0 for x in range(w)] for y in range(h)]
 #Initiate an array for the player containing the room they are in and what they have in their inventory.
-#PlayerArray[0] = Room player is in
-#PlayerArray[1] = Player Inventory
-PlayerArray = [1, ""]
+PlayerRoom = 1
+#player's inventory as a list.
+playerInventory = ["keys"]
 
 #Descriptions for each room stored in a multi-line triple quote string.
 d1 = "You are coming home from work and hear something rustling inside. The door is locked, use your key to open the door."
@@ -45,6 +46,9 @@ d12 = """You approach a chain-link fence. The fence is in disrepair and no longe
 In the distance over the fence, you can almost make out what appears to be a better game. Unfortunately, you have no way to get to it."""
 alt6 = """You are now able to enter your house."""
 
+#Alternate Room descriptions
+alt1 = "You are coming home from work and hear something rustling inside. Since the door is unlocked, you are now able to enter your house."
+
 #Skipping array value 0 so it's easier to read the room number (1-12), room information is loaded as follows:
 #[title, description, inventory, room to north, north to east, room to south, room to west]
 RoomsArray[1] = ["Front Porch", d1, "keys", 0,0,0,0]
@@ -67,25 +71,6 @@ Type help to return to these instruction anytime. Type exit to quit the game.\n"
 time.sleep(1)
 #printIntro()#Print intro once before game begins
 
-#Main while loop.
-while end == false:
-  #printNow(player.location.outString())
-  printNow(RoomsArray[PlayerArray[0]][0]) #RoomsArray[PlayerArray[0]][0] is the title of the room
-  printNow(RoomsArray[PlayerArray[0]][1]) #RoomsArray[PlayerArray[0]][1] is the description of the room
-  printNow(genConString(RoomsArray[PlayerArray[0]])) #RoomsArray[PlayerArray[0]] will give the room array that the player is currenlty in
-  command = requestString("What direction would you like to move?\nType: North, East, South or West\n"+
-  "'use' = use item in room\n'help' = instructions\n'exit' = quit game")
-  if command.upper() == "EXIT":
-    end = true
-  elif command.upper() == "HELP":
-    printIntro()
-  elif command.upper() == "USE":
-    useObject(RoomsArray[PlayerArray[0]])
-  elif command.upper() in correctInput:
-    movePlayer(RoomsArray[PlayerArray[0]], command)
-  else:
-    printNow("I'm sorry, that's not a correct command... Please try again")
-  
 #Function for generating the string that tells the player which directions they can head in.
 def genConString(Room):
   connection_string = "You can go "
@@ -103,7 +88,7 @@ def genConString(Room):
   elif Room[3] == 0 and Room[4] == 0 and Room[5] == 0 and Room[6] == 0:
     connection_string = "You can go nowhere yet... the front door is locked."
   return connection_string
- 
+
 #Function that moves the player into the next room.
 def movePlayer(Room, direction):
   if direction.upper() == "NORTH" and Room[3] != 0:
@@ -116,23 +101,36 @@ def movePlayer(Room, direction):
     PlayerArray[0] = Room[6]
   else:
     printNow("You can't go that way")
-
-def printIntro():
-  printNow("""Welcome to The Code Blooded House of Horror!
-While in each room, you will be told which direction you can move. You can move in that direction by typing either North, East, South or West.
-Type help to return to these instruction anytime. Type exit to quit the game.\n""")
-  time.sleep(1)
-    
+	
 #uses an item in a room
-def useObject(Room):
-  if Room[2] == "":
-    printNow("There is nothing to use in this room.")
-  elif Room[2] == "chainsaw":
-    printNow("After many attempts, you finally get the chainsaw running! It runs out of gas 5 seconds later.")
-  elif Room[2] == "keys":
-    Room[2] = ""
-    Room[1] = alt6
-    Room[3] = 4
-    printNow("You feel a chill as you try to insert the key into the hole.")
-
+def useObject(Room, inventory):
+	if "keys" in inventory and Room[2] == "keys":
+		inventory.remove("keys")
+		Room[1] = alt1
+		Room[3] = 4
+		printNow("You feel a chill as you try to insert the key into the hole.")
+	
+#Main while loop.
+while end == false:
+  #printNow(player.location.outString())
+  printNow(RoomsArray[PlayerArray[0]][0]) #RoomsArray[PlayerArray[0]][0] is the title of the room
+  printNow(RoomsArray[PlayerArray[0]][1]) #RoomsArray[PlayerArray[0]][1] is the description of the room
+  printNow(genConString(RoomsArray[PlayerArray[0]])) #RoomsArray[PlayerArray[0]] #will give the room array that the player is currenlty in
+  command = requestString("What direction would you like to move?\nType: North, East, South or West\n"+
+  "'use' = use item in room\n'help' = instructions\n'exit' = quit game")
+  if command.upper() == "EXIT":
+    end = true
+  elif command.upper() == "HELP":
+    printIntro()
+  elif command.upper() == "USE":
+    useObject(RoomsArray[PlayerRoom], playerInventory)
+  elif command.upper() in correctInput:
+    movePlayer(RoomsArray[PlayerArray[0]], command)
+  else:
+    printNow("I'm sorry, that's not a correct command... Please try again")  
+  
+def printIntro():
+  printNow("""Welcome to The Code Blooded House of Horror! While in each room, you will be told which direction you can move. 
+  You can move in that direction by typing either North, East, South or West.Type help to return to these instruction anytime. 
+  Type exit to quit the game.\n""")
 
