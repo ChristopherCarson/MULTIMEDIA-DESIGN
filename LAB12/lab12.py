@@ -179,16 +179,19 @@ def useObject(Room, inventory):
   elif Room[2] == "chainsaw":
     printNow("After many attempts, you finally get the chainsaw running! It runs out of gas 5 seconds later.")
   elif "keys" in inventory and Room[2] == "keys":
-    inventory[0] = ""
+    inventory.remove("keys")
     Room[1] = alt1
     Room[3] = 4
     printNow("You feel a chill as you try to insert the key into the hole.")
     
 def listInventory():
-  global playerInventory
   list = ""
-  for x in range (0,len(playerInventory)):
-    list = list + " " + playerInventory[x]
+  global playerInventory
+  if len(playerInventory)>0:
+    list = playerInventory[0]
+    if len(playerInventory)>1:
+      for x in range (1,len(playerInventory)):
+        list = list + ", " + playerInventory[x]
   return list
     
 #Function to print the Intro
