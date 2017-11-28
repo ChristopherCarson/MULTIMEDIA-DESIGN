@@ -11,9 +11,8 @@ correctInput = ["NORTH", "EAST", "SOUTH", "WEST"]
 #Initiate a two demonsiaonl array with  "list comprehension" for the 12 rooms.
 w, h = 6, 14;
 RoomsArray = [[0 for x in range(w)] for y in range(h)]
-#Initiate an array for the player containing the room they are in and what they have in their inventory.
-#PlayerArray = Room player is in
-PlayerArray = [1]
+#Initiate a variable for the player containing the room they are in and what they have in their inventory.
+PlayerRoom = 1
 #player's inventory as a list.
 playerInventory = []
 
@@ -119,14 +118,15 @@ def genConString(Room):
  
 #Function that moves the player into the next room.
 def movePlayer(Room, direction):
+  global PlayerRoom
   if direction.upper() == "NORTH" and Room[3] != 0:
-    PlayerArray[0] = Room[3]
+    PlayerRoom = Room[3]
   elif direction.upper() == "EAST" and Room[4] != 0:
-    PlayerArray[0] = Room[4]
+    PlayerRoom = Room[4]
   elif direction.upper() == "SOUTH" and Room[5] != 0:
-    PlayerArray[0] = Room[5]
+    PlayerRoom = Room[5]
   elif direction.upper() == "WEST" and Room[6] != 0:
-    PlayerArray[0] = Room[6]
+    PlayerRoom = Room[6]
   else:
     printNow("You can't go that way")
 
@@ -197,10 +197,9 @@ time.sleep(1)
 
 #Main while loop.
 while end == false:
-  #printNow(player.location.outString())
-  printNow(RoomsArray[PlayerArray[0]][0]) #RoomsArray[PlayerArray[0]][0] is the title of the room
-  printNow(RoomsArray[PlayerArray[0]][1]) #RoomsArray[PlayerArray[0]][1] is the description of the room
-  printNow(genConString(RoomsArray[PlayerArray[0]])) #RoomsArray[PlayerArray[0]] will give the room array that the player is currenlty in
+  printNow(RoomsArray[PlayerRoom][0]) #RoomsArray[PlayerArray[0]][0] is the title of the room
+  printNow(RoomsArray[PlayerRoom][1]) #RoomsArray[PlayerArray[0]][1] is the description of the room
+  printNow(genConString(RoomsArray[PlayerRoom])) #RoomsArray[PlayerArray[0]] will give the room array that the player is currenlty in
   command = requestString("What direction would you like to move?\nType: North, East, South or West\n"+
   "'use' = use item in room\n'take' = take an item from the room\n'help' = instructions\n'exit' = quit game")
   if command.upper() == "EXIT":
@@ -208,17 +207,17 @@ while end == false:
   elif command.upper() == "HELP":
     printIntro()
   elif command.upper() == "USE":
-    useObject(RoomsArray[PlayerArray[0]], playerInventory)
+    useObject(RoomsArray[PlayerRoom], playerInventory)
   elif command.upper() == "TAKE":
-    takeObject(RoomsArray[PlayerArray[0]])
+    takeObject(RoomsArray[PlayerRoom])
   elif command.upper() in correctInput:
-    movePlayer(RoomsArray[PlayerArray[0]], command)
+    movePlayer(RoomsArray[PlayerRoom], command)
   else:
     printNow("I'm sorry, that's not a correct command... Please try again")
-  if ("knife" in playerInventory and "crowbar" in playerInventory) and PlayerArray[0] == 9:#the player wins after finding a bum in the hidden room under the pool
+  if ("knife" in playerInventory and "crowbar" in playerInventory) and PlayerRoom == 9:#the player wins after finding a bum in the hidden room under the pool
     win = true 
     break;  
-  if "knife" in playerInventory and PlayerArray[0] == 1:#The player loses if they take the knife and go to the front porch
+  if "knife" in playerInventory and PlayerRoom == 1:#The player loses if they take the knife and go to the front porch
     lose = true
     break; 
   
