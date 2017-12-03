@@ -1,5 +1,6 @@
+#Lab 13 Problem 1
+#Chris Carson and Michael Rose
 
-#Problem 1
 def madLib():
   article = """As the fallout continues following Matt Lauer's firing from NBC News, insiders at the network are coming forward with more details about what led to Lauer's termination and the speculation running rampant inside 30 Rock.
 Before a NBC staffer filed an official complaint on Monday, executives at NBC had reportedly been hearing rumors about stories being reported for Variety and New York Times and asked Lauer if there was anything that he thought we should know or could fit into this category, and he adamantly denied that there was, Vanity Fair's Sarah Ellison reports.
@@ -19,3 +20,4 @@ The outlet cites a person familiar with [the former staffer's] complaint who all
     article = article.replace(wordsToReplace[x], newWords[x])
 
   showInformation(article)
+  
