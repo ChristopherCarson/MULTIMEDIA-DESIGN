@@ -9,11 +9,13 @@ def madLibs():
   its information processing capability, these scientists say. The study was conducted by researchers from six universities in the US, Brazil, Denmark and South Africa. It's been 
   accepted for publication in the journal Frontiers in Neuroanatomy."""
   
-  replaced = ["dogs","cats","Neurons","cells","information","Neuroanatomy"]#list of the words that will be replaced by the user
+  replaced = ["dogs","cats","neurons","Neurons","neurons","cells","information","Neuroanatomy"]#list of the words that will be replaced by the user
   
-  userWords = ["animals", "animals", "things","things", "random word", "fake science"]#list of what the user will be prompted to think about for new words
+  userWords = ["animals", "animals","things","things","things","random word","random word","fake science"]#list of what the user will be prompted to think about for new words
 
   libs = []#list that stores user words
+  
+  showInformation("This is Madlibs and the point of the game is to use zany words to help tell a story or make a news article funny. Try it out!")
   
   for x in userWords:
     w = requestString("Enter some "+ x)#asks the user to enter a new word that is prompted
@@ -22,5 +24,5 @@ def madLibs():
   for y in range (0, len(libs)):
     newsA = newsA.replace(replaced[y], libs[y])#takes the new words and puts them into the old words, then replaces thos words in the article
 
-  showInformation(newsA)#displays the updated article...madlibs style
+  printNow(newsA)#displays the updated article...madlibs style
   
