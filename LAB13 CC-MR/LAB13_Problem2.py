@@ -140,47 +140,47 @@ def takeObject(Room):
     playerInventory.append("figurine")
     Room[2] = ""
     Room[1] = alt4
-    printNow("You pick up the squirrel figurine and put it in your pocket. It might be useful.")
+    showInformation("You pick up the squirrel figurine and put it in your pocket. It might be useful.")
   elif Room[2] == "key":
     playerInventory.append("key")
     Room[2] = ""
     Room[1] = alt6
-    printNow("You take the key from the treadmill.  You expect something bad to happen but nothing happens.  You wonder what this key is used for.")
+    showInformation("You take the key from the treadmill.  You expect something bad to happen but nothing happens.  You wonder what this key is used for.")
   elif Room[2] == "":
-    printNow("There is nothing you can take in this room")
+    showInformation("There is nothing you can take in this room")
   elif Room[2] == "chainsaw":
-    printNow("You don't want to lug around a broken chainsaw... Better test it first.")
+    showInformation("You don't want to lug around a broken chainsaw... Better test it first.")
     
 #uses an item in a room
 def useObject(Room, inventory):
   if Room[2] == "":
-    printNow("There is nothing to use in this room.")
+    showInformation("There is nothing to use in this room.")
   elif Room[2] == "pedestal":
     if "figurine" in inventory:#checks if you have the figurine
       inventory.remove("figurine")#removes figurine from inventory
-      printNow("You place the figurine on the pedastal and a trap door opens on the east side leading to a secret room!")#print out message
+      showInformation("You place the figurine on the pedastal and a trap door opens on the east side leading to a secret room!")#print out message
       #the next 3 commands remove the pedestal to prevent it from being used again and then adds a connection to the secret room
       Room[2] = ""
       Room[1] = alt11
       Room[4] = 13
     else:#if you don't have it you get a message
-      printNow("You inspect the pedastal and notice small indentations on the top.  Maybe you can put something on it.")
+      showInformation("You inspect the pedastal and notice small indentations on the top.  Maybe you can put something on it.")
   elif Room[2] == "crowbar":
       if "key" in inventory:
         inventory.remove("key")
-        printNow("You open the tool chest with the key and open it to find a crowbar. Neat!")
+        showInformation("You open the tool chest with the key and open it to find a crowbar. Neat!")
         inventory.append("crowbar")
         Room[2] = ""
         Room[1] = alt3
       else:
-        printNow("You try to open the tool chest but it is locked.")
+        showInformation("You try to open the tool chest but it is locked.")
   elif Room[2] == "chainsaw":
-    printNow("After many attempts, you finally get the chainsaw running! It runs out of gas 5 seconds later.")
+    showInformation("After many attempts, you finally get the chainsaw running! It runs out of gas 5 seconds later.")
   elif "keys" in inventory and Room[2] == "keys":
     inventory.remove("keys")
     Room[1] = alt1
     Room[3] = 4
-    printNow("You feel a chill as you try to insert the key into the hole.")
+    showInformation("You feel a chill as you try to insert the key into the hole.")
     
 def listInventory():
   list = ""
@@ -194,9 +194,9 @@ def listInventory():
     
 #Function to print the Intro
 def printIntro():
-  showInformation("""Welcome to The Code Blooded House of Horror!
-While in each room, you will be told which direction you can move. You can move in that direction by typing North, East, West or South.
-Type help to return to these instruction anytime. Type exit to quit the game.\n""")
+  showInformation("""Welcome to The Code Blooded House of Horror! 
+While in each room, you will be told which direction you can move. You can move in that direction by typing North, East, West or South. 
+Type help to view these instructions at anytime. Type exit to quit the game.\n""")
 
 #game starts here
 #wait one second
@@ -206,7 +206,7 @@ playerName = requestString("Please enter your name:")
 #Main while loop.
 while end == false:
   printNow(RoomsArray[PlayerRoom][0]) #RoomsArray[PlayerArray[0]][0] is the title of the room
-  showInformation(RoomsArray[PlayerRoom][1]) #RoomsArray[PlayerArray[0]][1] is the description of the room
+  printNow(RoomsArray[PlayerRoom][1]) #RoomsArray[PlayerArray[0]][1] is the description of the room
   printNow(genConString(RoomsArray[PlayerRoom])) #RoomsArray[PlayerArray[0]] will give the room array that the player is currenlty in
   list = listInventory()
   command = requestString("What direction would you like to move?\nType: North, East, South or West\n"+
