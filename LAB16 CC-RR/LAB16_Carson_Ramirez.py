@@ -5,8 +5,7 @@ import urllib
 
 def makePage():
   dir = os.path.dirname(__file__)#uses the parent folder of the program
-  path = dir + "\\"+"NEW_MOVIES.html"#looks for test.html in the parent directory
-  #replace the directory in the line below with the path to your file
+  path = dir + "\\"+"NEW_MOVIES.html"#creates a pathway with the desired file name
   file = open(path, "wt")
   
   #opener = urllib.FancyURLopener({})  
