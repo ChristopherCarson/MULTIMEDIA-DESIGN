@@ -1,8 +1,6 @@
 #CST 205 lab15 problem 1 Christopher Carson, Raul Ramirez  
 from random import randint
 
-end = false #global variable
-
 def roll():#rolls two dice
   dice = randint(1,6)+randint(1,6)#adds random dice values
   print(dice)
