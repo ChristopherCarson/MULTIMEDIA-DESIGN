@@ -5,7 +5,6 @@ import datetime
 
 #Problem 1
 
-#Problem 2
 #Rolls a "dice". Takes the amount of sides a dice has and then rolls a random number and returns it.
 def roll_dice(num_sides):
   import random
@@ -45,7 +44,8 @@ if win:
   print "Congratulations! You won!"
 else:
   print "Sorry! You lost!"
-  
+
+#Problem 2  
 #This function takes a year and a month and prints out the calendar for the month in that year.
 #Use a monospaced font to remove formatting issues
 def birthMonth(year, month):
